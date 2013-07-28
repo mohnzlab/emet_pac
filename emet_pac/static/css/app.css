@@ -1,6 +1,30 @@
 html,
 body {
-	height: 80%;
+	height: 100%;
+}
+
+.imagenRedonda {
+	width: 150px;
+	height: 150px;
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
+
+#contenidoPrimario {
+	margin-left: 5%;
+}
+
+#contenidoPrimario p {
+	margin-top: 1em;
+	margin-bottom: 2em;
+}
+
+#contenidoPrimario img:hover {
+	background-color: red;
 }
 
 #mainNavbar {
@@ -14,7 +38,7 @@ body {
 
 #footer {
     background-color: #F9D423;
-	height: 105px;
+	height: auto;
 }
 
 #login legend {
@@ -25,9 +49,14 @@ body {
 	height: 100px;
 }
 
-#wrap {
-    min-height: 99%;
-    height: auto !important;
-    height: 100%;
-    margin: 0 auto 61px;
+#panelLogin {
+	margin-top: 4em;
 }
+
+#wrap {
+    min-height: 60%;
+    height: auto !important;
+    height: 60%;
+    margin: 0 auto 60px;
+}
+
