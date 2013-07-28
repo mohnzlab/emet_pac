@@ -1,0 +1,33 @@
+html,
+body {
+	height: 80%;
+}
+
+#mainNavbar {
+	background-color: #F9D423;
+	border-bottom: 3px solid #EDE574;
+}
+
+#mainNavbar a {
+	font-size: 2em;
+}
+
+#footer {
+    background-color: #F9D423;
+	height: 105px;
+}
+
+#login legend {
+	text-align: center;
+}
+
+#push {
+	height: 100px;
+}
+
+#wrap {
+    min-height: 99%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto 61px;
+}

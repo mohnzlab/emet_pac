@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block titulo %} emet | PAC {% endblock %}
+{% block contenido %}
+	<div id="panelLogin" class="container">
+    <div class="row">
+      <div class="col-lg-6 col-offset-3">
+        <div class="panel panel-primary">
+          <div class="panel-heading">Ingrese sus datos de usuario</div>
+          <div class="row">
+            <div class="col-8 col-sm-6 col-lg-8">
+              <form id="login" name="login" method='POST' action="/login/">{% csrf_token %}
+                <fieldset>
+                  <div class="form-group">
+                    <input type="text" name="username" class="form-control" placeholder="Usuario" autofocus>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-large btn-primary" type="submit">Ingresar</button>   
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div class="col-6 col-sm-4 col-lg-4">
+              <img src="{{STATIC_URL}}img/pac-logo.jpg" class="img-rounded" alt="Partido Anti Corrupción de Honduras (PAC)" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock contenido %}

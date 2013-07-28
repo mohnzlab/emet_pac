@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block titulo %}{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="{{STATIC_URL}}css/app.css" rel="stylesheet" media="screen">
+</head>
+<body>
+  <div id="mainNavbar" class="navbar">
+    <a class="navbar-brand" href="/">emet</a>
+    {% block usuarioInfo %} {% endblock %}
+  </div>
+  <div id="wrap">
+    {% block contenido %} {% endblock %}
+  </div>
+  <div id="push"></div>
+</div>
+<div id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <blockquote>
+          <article>
+            <p>Sistema de Conteo de Votos Electorales.</p>
+          </article>
+          <article>
+            <strong>Partido Anti Corrupción de Honduras (PAC) - Choluteca.</strong>
+          </article>
+          <article>
+            Sistema creado y diseñado por Moncho Zuniga (<a href="https://www.twitter.com/monchozuniga" target="_blank">@monchozuniga</a>) y Daniel Ortiz (<a href="https://www.twitter.com/danielortiz_d" target="_blank">@danielortiz_d</a>).
+          </article>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- JavaScript plugins (requires jQuery) -->
+<script src="{{STATIC_URL}}js/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+</body>
+</html>

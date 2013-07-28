@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block titulo %} emet | PAC {% endblock %}
+{% block usuarioInfo %} 
+  <p id="usuario" class="navbar-text">Inicio Sesion como Ramon Zuniga</p>
+{% endblock %}
+{% block contenido %}
+<div class="container">
+  <section id="contenidoPrimario">
+    <div class="row">
+      <div class="container">
+        <div class="col-lg-4">
+          <a href="/Presidentes/"><img src="{{STATIC_URL}}img/android-ico.ico" class="imagenRedonda" alt=""></a>
+          <p>| Conteo de Votos para Presidentes</p>
+        </div>
+        <div class="col-lg-4">
+          <a href="/Alcaldes/"><img src="{{STATIC_URL}}img/android-ico.ico" class="imagenRedonda" alt=""></a>
+          <p>| Conteo de Votos para Alcaldes</p>
+        </div>
+        <div class="col-lg-4">
+          <a href="#"><img src="{{STATIC_URL}}img/android-ico.ico" class="imagenRedonda" alt=""></a>
+          <p>| Conteo de Votos para Diputados</p>
+        </div>
+      </div>
+      <div class="container">
+        <div class="col-lg-4">
+          <a href="#"><img src="{{STATIC_URL}}img/android-ico.ico" class="imagenRedonda" alt=""></a>
+          <p>| Reportes</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+{% endblock contenido %}
