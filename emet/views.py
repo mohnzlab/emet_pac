@@ -45,3 +45,8 @@ def mainAlcaldes(request):
 @login_required(login_url='/login/')
 def mainPresidentes(request):
 	return render_to_response('mainPresidentes.html', context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def salir(request):
+	logout(request)
+	return HttpResponseRedirect('/')

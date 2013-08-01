@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     url(r'^main/', 'emet.views.main', name="main"),
     url(r'^Alcaldes/', 'emet.views.mainAlcaldes', name="mainAlcaldes"),
     url(r'^Presidentes/', 'emet.views.mainPresidentes', name="mainPresidentes"),
+    url(r'^logout_/', 'emet.views.salir', name="salir"),
 )
