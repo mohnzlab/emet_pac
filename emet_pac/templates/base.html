@@ -11,8 +11,10 @@
 <body>
   <div id="mainNavbar" class="navbar">
     <a id="tituloNavBar" class="navbar-brand" href="/">emet</a>
+     {% if user.is_authenticated %}
     <a class="btn btn-danger navbar-btn" href="/logout_/">Cerrar Sesion</a>
-    {% block usuarioInfo %} {% endblock %}
+    <p id="usuario" class="navbar-text pull-right">Inicio Sesion como {{ user.username }}</p>
+    {% endif %}
   </div>
   <div id="wrap">
     {% block contenido %} {% endblock %}
