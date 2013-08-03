@@ -1,73 +1,62 @@
 {% extends 'base.html' %}
 {% block titulo %} emet | Alcaldes {% endblock %}
 {% block usuarioInfo %} 
-  <p id="usuario" class="navbar-text pull-right">Inicio Sesion como Ramon Zuniga</p>
+<p id="usuario" class="navbar-text pull-right">Inicio Sesion como Ramon Zuniga</p>
 {% endblock %}
 {% block contenido %}
 <div class="container">
-    <form class="form-horizontal">
-      <div class="form-group">
-        <h3><label for="noMet" class="col-lg-2 control-label"># MER:</label></h3>
-        <div class="col-6 col-sm-4 col-lg-4">
-          <input type="text" class="form-control" id="noMer" placeholder="#">
-        </div>
-        <div class="col-6 col-sm-4 col-lg-4">
-           <button class="btn btn-primary" type="submit">Nuevo</button> 
-        </div>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <h3><label for="noMet" class="col-lg-2 control-label"># MER:</label></h3>
+      <div class="col-6 col-sm-4 col-lg-4">
+        <input type="number" class="form-control numero" id="noMer" placeholder="#" disabled>
       </div>
-    </form>
-    <div class="panel panel-primary">
-      <div class="panel-heading">Conteo de Votos de Presidentes</div>
-      <section id="contenidoPrimario">
-        <div class="row">
-          <div class="col-lg-9">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-4">
-                  <a href="#"><img src="{{STATIC_URL}}img/salvadornasralla.jpg" class="imagenRedonda" alt="Salvador Nasralla (PAC)"></a>
-                  <p>| Salvador Nasralla (PAC)</p>
-                </div>
-                <div class="col-lg-6">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                    </div>
-                    <button class="btn btn-primary" type="submit">Guardar</button> 
-                  </form>
-                </div>
+      <div class="col-6 col-sm-4 col-lg-4">
+         <button id="btnNuevoMer" class="btn btn-primary" type="button" data-animation="true" data-placement="right" title="Presiona este boton para ingresar un nuevo numero de acta">Nuevo</button> 
+      </div>
+    </div>
+  </form>
+  <div class="panel panel-primary">
+    <div class="panel-heading">Conteo de Votos de Presidentes</div>
+    <section id="contenidoPrimario">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4">
+                <a href="#"><img src="{{STATIC_URL}}img/salvadornasralla.jpg" class="imagenRedonda" alt="Salvador Nasralla (PAC)"></a>
+                <p>| Salvador Nasralla (PAC)</p>
               </div>
-              <hr>
-              <div class="row">
-                <div class="col-lg-4">
-                 <a href="#"><img src="{{STATIC_URL}}img/juanorlando.jpg" class="imagenRedonda" alt="Juan Orlando Hernandez (PN)"></a>
-                 <p>| Juan Orlando Hernandez (PN)</p>
-               </div>
-               <div class="col-lg-6">
-                <form class="form-inline">
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+              <div class="col-lg-6">
+                <form id="formN" class="form-inline">
+                  <fieldset>
+                  <div class="row">
+                    <div class="form-group col-lg-6">
+                      <input type="text" class="form-control" name="noMer" placeholder="# Mer" disabled>
+                    </div>
+                    <div class="form-group col-lg-6">
+                      <input type="hidden" class="form-control" name="idPresidente" placeholder="" value='2' disabled>
+                    </div>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+                    <input type="number" class="form-control numero" name="votosValidos" placeholder="Votos Validos">
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+                    <input type="number" class="form-control numero" name="votosNulos" placeholder="Votos Nulos">
+                  </div>
+                  <div class="form-group">
+                    <input type="number" class="form-control numero" name="votosBlancos" placeholder="Votos Blancos">
                   </div>
                   <button class="btn btn-primary" type="submit">Guardar</button> 
                 </form>
+                </fieldset>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-lg-4">
-               <a href="#"><img src="{{STATIC_URL}}img/zelaya.jpg" class="imagenRedonda" alt="Xiomara Castro de Zelaya (Libre)"></a>
-               <p>| Xiomara Castro de Zelaya (Libre)</p>
+               <a href="#"><img src="{{STATIC_URL}}img/juanorlando.jpg" class="imagenRedonda" alt="Juan Orlando Hernandez (PN)"></a>
+               <p>| Juan Orlando Hernandez (PN)</p>
              </div>
              <div class="col-lg-6">
               <form class="form-inline">
@@ -80,119 +69,140 @@
                 <div class="form-group">
                   <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
                 </div>
-                 <button class="btn btn-primary" type="submit">Guardar</button>  
-              </form>
-            </div>
-          </div>
-           <hr>
-            <div class="row">
-              <div class="col-lg-4">
-               <a href="#"><img src="{{STATIC_URL}}img/villeda.jpg" class="imagenRedonda" alt="Mauricio Villeda Bermudez (PL)"></a>
-               <p>| Mauricio Villeda Bermudez (PL)</p>
-             </div>
-             <div class="col-lg-6">
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                </div>
-                 <button class="btn btn-primary" type="submit">Guardar</button>  
+                <button class="btn btn-primary" type="submit">Guardar</button> 
               </form>
             </div>
           </div>
           <hr>
-            <div class="row">
-              <div class="col-lg-4">
-               <a href="#"><img src="{{STATIC_URL}}img/meraz.jpg" class="imagenRedonda" alt="Orle Anibal Solis Meraz (DC)"></a>
-               <p>| Orle Anibal Solis Meraz (DC)</p>
-             </div>
-             <div class="col-lg-6">
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                </div>
-                 <button class="btn btn-primary" type="submit">Guardar</button>  
-              </form>
-            </div>
+          <div class="row">
+            <div class="col-lg-4">
+             <a href="#"><img src="{{STATIC_URL}}img/zelaya.jpg" class="imagenRedonda" alt="Xiomara Castro de Zelaya (Libre)"></a>
+             <p>| Xiomara Castro de Zelaya (Libre)</p>
+           </div>
+           <div class="col-lg-6">
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+              </div>
+               <button class="btn btn-primary" type="submit">Guardar</button>  
+            </form>
           </div>
-          <hr>
-            <div class="row">
-              <div class="col-lg-4">
-               <a href="#"><img src="{{STATIC_URL}}img/andrespavon.jpg" class="imagenRedonda" alt="Andres Pavon Murillo (UD)"></a>
-               <p>| Andres Pavon Murillo (UD)</p>
-             </div>
-             <div class="col-lg-6">
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                </div>
-                 <button class="btn btn-primary" type="submit">Guardar</button>  
-              </form>
-            </div>
+        </div>
+         <hr>
+          <div class="row">
+            <div class="col-lg-4">
+             <a href="#"><img src="{{STATIC_URL}}img/villeda.jpg" class="imagenRedonda" alt="Mauricio Villeda Bermudez (PL)"></a>
+             <p>| Mauricio Villeda Bermudez (PL)</p>
+           </div>
+           <div class="col-lg-6">
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+              </div>
+               <button class="btn btn-primary" type="submit">Guardar</button>  
+            </form>
           </div>
-           <hr>
-            <div class="row">
-              <div class="col-lg-4">
-               <a href="#"><img src="{{STATIC_URL}}img/jorgeaguilar.jpg" class="imagenRedonda" alt="Jorge Rafael Aguilar Paredes (PINU)"></a>
-               <p>| Jorge Rafael Aguilar Paredes (PINU)</p>
-             </div>
-             <div class="col-lg-6">
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                </div>
-                 <button class="btn btn-primary" type="submit">Guardar</button>  
-              </form>
-            </div>
+        </div>
+        <hr>
+          <div class="row">
+            <div class="col-lg-4">
+             <a href="#"><img src="{{STATIC_URL}}img/meraz.jpg" class="imagenRedonda" alt="Orle Anibal Solis Meraz (DC)"></a>
+             <p>| Orle Anibal Solis Meraz (DC)</p>
+           </div>
+           <div class="col-lg-6">
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+              </div>
+               <button class="btn btn-primary" type="submit">Guardar</button>  
+            </form>
           </div>
-          <hr>
-            <div class="row">
-              <div class="col-lg-4">
-               <a href="#"><img src="{{STATIC_URL}}img/romeovasquez.jpg" class="imagenRedonda" alt="Romeo Orlando Vasquez Velasquez (AP)"></a>
-               <p>| Romeo Orlando Vasquez Velasquez (AP)</p>
-             </div>
-             <div class="col-lg-6">
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                </div>
-                 <button class="btn btn-primary" type="submit">Guardar</button>  
-              </form>
-            </div>
+        </div>
+        <hr>
+          <div class="row">
+            <div class="col-lg-4">
+             <a href="#"><img src="{{STATIC_URL}}img/andrespavon.jpg" class="imagenRedonda" alt="Andres Pavon Murillo (UD)"></a>
+             <p>| Andres Pavon Murillo (UD)</p>
+           </div>
+           <div class="col-lg-6">
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+              </div>
+               <button class="btn btn-primary" type="submit">Guardar</button>  
+            </form>
+          </div>
+        </div>
+         <hr>
+          <div class="row">
+            <div class="col-lg-4">
+             <a href="#"><img src="{{STATIC_URL}}img/jorgeaguilar.jpg" class="imagenRedonda" alt="Jorge Rafael Aguilar Paredes (PINU)"></a>
+             <p>| Jorge Rafael Aguilar Paredes (PINU)</p>
+           </div>
+           <div class="col-lg-6">
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+              </div>
+               <button class="btn btn-primary" type="submit">Guardar</button>  
+            </form>
+          </div>
+        </div>
+        <hr>
+          <div class="row">
+            <div class="col-lg-4">
+             <a href="#"><img src="{{STATIC_URL}}img/romeovasquez.jpg" class="imagenRedonda" alt="Romeo Orlando Vasquez Velasquez (AP)"></a>
+             <p>| Romeo Orlando Vasquez Velasquez (AP)</p>
+           </div>
+           <div class="col-lg-6">
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+              </div>
+               <button class="btn btn-primary" type="submit">Guardar</button>  
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 </div>
 
 </div>

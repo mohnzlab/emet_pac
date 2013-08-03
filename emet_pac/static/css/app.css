@@ -3,6 +3,10 @@ body {
 	height: 100%;
 }
 
+label.error {
+	color: red;
+	font-weight: bold;
+}
 .imagenRedonda {
 	width: 150px;
 	height: 150px;
@@ -37,7 +41,7 @@ body {
 }
 
 #footer {
-    background-color: #F9D423;
+	background-color: #F9D423;
 	height: auto;
 }
 
@@ -54,9 +58,9 @@ body {
 }
 
 #wrap {
-    min-height: 60%;
-    height: auto !important;
-    height: 60%;
-    margin: 0 auto 60px;
+	min-height: 60%;
+	height: auto !important;
+	height: 60%;
+	margin: 0 auto 60px;
 }
 
