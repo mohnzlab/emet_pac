@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesForm
 
 def home(request):
 	if not request.user.is_anonymous():
@@ -50,3 +51,45 @@ def mainPresidentes(request):
 def salir(request):
 	logout(request)
 	return HttpResponseRedirect('/')
+
+@login_required(login_url='/login/')
+def ActaPresidenteAdd(request):
+	if request.is_ajax():
+		if request.method == 'POST':
+			form = ActasPresidentesForm(data=request.POST)
+			if form.is_valid():
+				u = form.save()
+
+				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
+				return HttpResponse(simplejson.dumps(respuesta))
+			else:
+				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
+				return HttpResponse(simplejson.dumps(respuesta))
+
+@login_required(login_url='/login/')
+def ActaDiputadoAdd(request):
+	if request.is_ajax():
+		if request.method == 'POST':
+			form = ActasDiputadosForm(data=request.POST)
+			if form.is_valid():
+				u = form.save()
+
+				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
+				return HttpResponse(simplejson.dumps(respuesta))
+			else:
+				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
+				return HttpResponse(simplejson.dumps(respuesta))
+
+@login_required(login_url='/login/')
+def ActaAlcaldeAdd(request):
+	if request.is_ajax():
+		if request.method == 'POST':
+			form = ActasAlcaldesForm(data=request.POST)
+			if form.is_valid():
+				u = form.save()
+
+				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
+				return HttpResponse(simplejson.dumps(respuesta))
+			else:
+				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
+				return HttpResponse(simplejson.dumps(respuesta))
