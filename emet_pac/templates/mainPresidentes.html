@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block titulo %} emet | Alcaldes {% endblock %}
+{% block titulo %} emet | Presidentes {% endblock %}
 {% block usuarioInfo %} 
 <p id="usuario" class="navbar-text pull-right">Inicio Sesion como Ramon Zuniga</p>
 {% endblock %}
@@ -32,20 +32,23 @@
                   <fieldset>
                   <div class="row">
                     <div class="form-group col-lg-6">
-                      <input type="text" class="form-control" name="noMer" placeholder="# MER" disabled>
+                      <input type="text" class="form-control" name="NoActa" placeholder="# MER" disabled>
                     </div>
                     <div class="form-group col-lg-6">
-                      <input type="hidden" class="form-control" name="idPresidente" placeholder="" value='2' disabled>
+                      <input type="hidden" class="form-control" name="RepPresidenteID" placeholder="" value='1' disabled>
                     </div>
                   </div>
                   <div class="form-group">
-                    <input type="number" class="form-control numero" name="votosValidos" placeholder="Votos Validos">
+                    <label class="control-label" for="VotosValidos">Votos Validos:</label>
+                    <input type="number" class="form-control numero" name="VotosValidos" placeholder="Votos Validos">
                   </div>
                   <div class="form-group">
-                    <input type="number" class="form-control numero" name="votosNulos" placeholder="Votos Nulos">
+                    <label class="control-label" for="VotosNulos">Votos Nulos:</label>
+                    <input type="number" class="form-control numero" name="VotosNulos" placeholder="Votos Nulos">
                   </div>
                   <div class="form-group">
-                    <input type="number" class="form-control numero" name="votosBlancos" placeholder="Votos Blancos">
+                    <label class="control-label" for="VotosBlancos">Votos Blancos:</label>
+                    <input type="number" class="form-control numero" name="VotosBlancos" placeholder="Votos Blancos">
                   </div>
                   <button class="btn btn-primary" type="submit">Guardar</button> 
                 </form>

@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$('#noMer').focusout(function() {
 		$('#noMer').prop('disabled', true);
 		$('#btnNuevoMer').tooltip('show');
-		$('input[name=noMer]').val($(this).val());
+		$('input[name=NoActa]').val($(this).val());
 	});
 	// Activa el campo de texto noMer
 	$('#btnNuevoMer').click(function() {
@@ -54,17 +54,44 @@ $(document).ready(function() {
 			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
 		},
 		submitHandler: function(form) {
-			alert($('input[name=idPresidente]').val());
+			//alert($('input[name=idPresidente]').val());
 			/*$(form).ajaxSubmit({ // create an AJAX call...
 						data: $(form).serialize(), // get the form data
 						type: $(form).attr('method'), // GET or POST
 						url: $(form).attr('action'), // the file to call
 						success: function(response) { // on success..
-							$('#mensaje').html(response); // update the DIV
+							//$('#mensaje').html(response); // update the DIV
+							aler('Correcto');
+							bloquearControles(form);
+                }
+            });*/
+			//return false;
+			 $.ajax({ // create an AJAX call...
+                data: $(form).serialize(), // get the form data
+                type: $(form).attr('method'), // GET or POST
+                url: $(form).attr('action'), // the file to call
+                success: function(response) { // on success..
+                    alert('Correcto');
+					bloquearControles(form);
                 }
             });
-			return false;*/
+			/*form.preventDefault();
+
+			$.post($(form).attr('method'), $(form).serialize(), function(data) {
+				if (data.codigo == 1) {
+					alert(data.msg);
+					document.location = $(form).attr('action');
+				} else if (data.codigo == 2) {
+					alert(data.msg);
+				}
+			}, 'json');*/
 		}
 
 	});
+
+	// Funcion para bloquear los controles del formulario actual
+
+	function bloquearControles(form) {
+		$(form).find("fieldset").prop('disabled', true);
+	}
 });

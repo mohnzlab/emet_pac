@@ -18,6 +18,11 @@ label.error {
 	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
 }
 
+.imagenRetina {
+	height: 150px;
+	width: 150px;
+}
+
 #contenidoPrimario {
 	margin-left: 5%;
 }
@@ -27,9 +32,9 @@ label.error {
 	margin-bottom: 2em;
 }
 
-#contenidoPrimario img:hover {
+/*#contenidoPrimario img:hover {
 	background-color: red;
-}
+}*/
 
 #mainNavbar {
 	background-color: #F9D423;
