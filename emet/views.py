@@ -61,10 +61,16 @@ def ActaPresidenteAdd(request):
 				u = form.save()
 
 				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
-				return HttpResponse(simplejson.dumps(respuesta))
+				return HttpResponseRedirect("/errorPOst/")
 			else:
 				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
-				return HttpResponse(simplejson.dumps(respuesta))
+				print "Error de valido"
+				return HttpResponseRedirect("/errorDatos/")
+		else:
+			print "Error de post"
+	else:
+		print "Error de ajax"
+		return HttpResponseRedirect("/")
 
 @login_required(login_url='/login/')
 def ActaDiputadoAdd(request):
