@@ -66,15 +66,15 @@ $(document).ready(function() {
                 }
             });*/
 			//return false;
-			 $.ajax({ // create an AJAX call...
-                data: $(form).serialize(), // get the form data
-                type: $(form).attr('method'), // GET or POST
-                url: $(form).attr('action'), // the file to call
-                success: function(response) { // on success..
-                    alert('Correcto');
-					bloquearControles(form);
-                }
-            });
+			 // $.ajax({ // create an AJAX call...
+    //             data: $(form).serialize(), // get the form data
+    //             type: $(form).attr('method'), // GET or POST
+    //             url: $(form).attr('action'), // the file to call
+    //             success: function(data2) { // on success..
+    //                 alert(data2.msg);
+				// 	//bloquearControles(form);
+    //             }
+    //         });
 			/*form.preventDefault();
 
 			$.post($(form).attr('method'), $(form).serialize(), function(data) {

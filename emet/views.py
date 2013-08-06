@@ -46,30 +46,14 @@ def mainAlcaldes(request):
 
 @login_required(login_url='/login/')
 def mainPresidentes(request):
-	return render_to_response('mainPresidentes.html', context_instance=RequestContext(request))
+	formi = ActasPresidentesForm()
+
+	return render_to_response('mainPresidentes.html', {'formi' : formi}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def salir(request):
 	logout(request)
 	return HttpResponseRedirect('/')
-
-# @login_required(login_url='/login/')
-# def ActaPresidenteAdd(request):
-# 	if request.is_ajax():
-# 		if request.method == 'POST':
-# 			form = ActasPresidentesForm(data=request.POST)
-# 			if form.is_valid():
-# 				u = form.save(commit=False)
-# 				user2 = request.user
-# 				u.UsuarioEmetID = user2.pk
-# 				u.save()
-
-# 				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
-# 				return JsonResponse(respuesta)
-# 			else:
-# 				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
-# 				print "Error de valido"
-# 				return JsonResponse(respuesta)
 
 @login_required(login_url='/login/')
 def ActaPresidenteAdd(request):
@@ -78,17 +62,14 @@ def ActaPresidenteAdd(request):
 			form = ActasPresidentesForm(data=request.POST)
 			if form.is_valid():
 				u = form.save(commit=False)
-				user2 = request.user
-				u.UsuarioEmetID = user2.pk
+				u.UsuarioEmetID = request.user
 				u.save()
 
-				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
+				respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
 				return HttpResponse(simplejson.dumps(respuesta))
 			else:
-				respuesta = {'codigo': 2, 'msg': 'La ubicacion no fue'}
+				respuesta = {'codigo': 2, 'msg': 'No se ha podido guardar el acta '}
 				return HttpResponse(simplejson.dumps(respuesta))
-		else:
-			HttpResponseRedirect("/errorPost/")
 
 @login_required(login_url='/login/')
 def ActaDiputadoAdd(request):
