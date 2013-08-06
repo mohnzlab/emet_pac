@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesForm
+from django.utils import simplejson
 
 def home(request):
 	if not request.user.is_anonymous():
@@ -52,25 +53,42 @@ def salir(request):
 	logout(request)
 	return HttpResponseRedirect('/')
 
+# @login_required(login_url='/login/')
+# def ActaPresidenteAdd(request):
+# 	if request.is_ajax():
+# 		if request.method == 'POST':
+# 			form = ActasPresidentesForm(data=request.POST)
+# 			if form.is_valid():
+# 				u = form.save(commit=False)
+# 				user2 = request.user
+# 				u.UsuarioEmetID = user2.pk
+# 				u.save()
+
+# 				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
+# 				return JsonResponse(respuesta)
+# 			else:
+# 				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
+# 				print "Error de valido"
+# 				return JsonResponse(respuesta)
+
 @login_required(login_url='/login/')
 def ActaPresidenteAdd(request):
 	if request.is_ajax():
 		if request.method == 'POST':
 			form = ActasPresidentesForm(data=request.POST)
 			if form.is_valid():
-				u = form.save()
+				u = form.save(commit=False)
+				user2 = request.user
+				u.UsuarioEmetID = user2.pk
+				u.save()
 
 				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
-				return HttpResponseRedirect("/errorPOst/")
+				return HttpResponse(simplejson.dumps(respuesta))
 			else:
-				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
-				print "Error de valido"
-				return HttpResponseRedirect("/errorDatos/")
+				respuesta = {'codigo': 2, 'msg': 'La ubicacion no fue'}
+				return HttpResponse(simplejson.dumps(respuesta))
 		else:
-			print "Error de post"
-	else:
-		print "Error de ajax"
-		return HttpResponseRedirect("/")
+			HttpResponseRedirect("/errorPost/")
 
 @login_required(login_url='/login/')
 def ActaDiputadoAdd(request):
@@ -78,7 +96,10 @@ def ActaDiputadoAdd(request):
 		if request.method == 'POST':
 			form = ActasDiputadosForm(data=request.POST)
 			if form.is_valid():
-				u = form.save()
+				u = form.save(commit=False)
+				user2 = request.user
+				u.UsuarioEmetID = user2.pk
+				u.save()
 
 				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
 				return HttpResponse(simplejson.dumps(respuesta))
