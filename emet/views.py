@@ -62,7 +62,6 @@ def ActaPresidenteAdd(request):
 			form = ActasPresidentesForm(data=request.POST)
 			if form.is_valid():
 				u = form.save(commit=False)
-				u.UsuarioEmetID = request.user
 				u.save()
 
 				respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
