@@ -29,6 +29,14 @@ $(document).ready(function() {
 			}
 		}
 	});
+	// Funcion para bloquear los controles del formulario actual
+	function bloquearControles(form) {
+		$(form).find("input[name=NoActa]").val('');
+		$(form).find("input[name=votosValidos]").val('');
+		$(form).find("input[name=votosNulos]").val('');
+		$(form).find("input[name=votosBlancos]").val('');
+		$(form).find("fieldset").prop('disabled', true);
+	}
 	// Cambia el mensaje de error de un campo requerido
 	$.validator.messages.required = 'Este campo es requerido.';
 	// Funcion para validar formularios
@@ -54,44 +62,17 @@ $(document).ready(function() {
 			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
 		},
 		submitHandler: function(form) {
-			//alert($('input[name=idPresidente]').val());
-			/*$(form).ajaxSubmit({ // create an AJAX call...
-						data: $(form).serialize(), // get the form data
-						type: $(form).attr('method'), // GET or POST
-						url: $(form).attr('action'), // the file to call
-						success: function(response) { // on success..
-							//$('#mensaje').html(response); // update the DIV
-							aler('Correcto');
-							bloquearControles(form);
-                }
-            });*/
-			//return false;
-			 // $.ajax({ // create an AJAX call...
-    //             data: $(form).serialize(), // get the form data
-    //             type: $(form).attr('method'), // GET or POST
-    //             url: $(form).attr('action'), // the file to call
-    //             success: function(data2) { // on success..
-    //                 alert(data2.msg);
-				// 	//bloquearControles(form);
-    //             }
-    //         });
-			/*form.preventDefault();
-
-			$.post($(form).attr('method'), $(form).serialize(), function(data) {
-				if (data.codigo == 1) {
-					alert(data.msg);
-					document.location = $(form).attr('action');
-				} else if (data.codigo == 2) {
-					alert(data.msg);
-				}
-			}, 'json');*/
+			$(form).submit(function(e) {
+				e.preventDefault();
+				$.post($(form).attr('action'), $(form).serialize(), function(data) {
+					if (data.codigo == 1) {
+						alert(data.msg);
+						bloquearControles($(form));
+					} else if (data.codigo == 2) {
+						alert(data.msg);
+					}
+				}, 'json');
+			});
 		}
-
 	});
-
-	// Funcion para bloquear los controles del formulario actual
-
-	function bloquearControles(form) {
-		$(form).find("fieldset").prop('disabled', true);
-	}
 });
