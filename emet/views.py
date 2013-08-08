@@ -63,7 +63,6 @@ def ActaPresidenteAdd(request):
 			if form.is_valid():
 				u = form.save(commit=False)
 				u.save()
-
 				respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
 				return HttpResponse(simplejson.dumps(respuesta))
 			else:
