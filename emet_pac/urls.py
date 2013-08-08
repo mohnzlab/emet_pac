@@ -23,4 +23,5 @@ urlpatterns = patterns('',
     url(r'^main/Presidentes/ActaPresidente/$', 'emet.views.ActaPresidenteAdd', name="ActaPresidenteAdd"),
     url(r'^main/Diputados/ActaDiputado/$', 'emet.views.ActaDiputadoAdd', name="ActaDiputadoAdd"),
     url(r'^main/Alcaldes/ActaAlcalde/$', 'emet.views.ActaAlcaldeAdd', name="ActaAlcaldeAdd"),
+    url(r'^logout_/', 'emet.views.salir', name="salir"),
 )

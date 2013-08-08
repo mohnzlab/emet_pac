@@ -12,3 +12,13 @@
 *.pyc
 
 *.db
+
+emet/views.pyc
+
+emet/views.pyc
+
+emet_db.db
+
+emet_pac/urls.pyc
+
+emet_pac/urls.pyc
