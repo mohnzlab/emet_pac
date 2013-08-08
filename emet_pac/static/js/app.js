@@ -29,14 +29,6 @@ $(document).ready(function() {
 			}
 		}
 	});
-	// Funcion para bloquear los controles del formulario actual
-	function bloquearControles(form) {
-		$(form).find("input[name=NoActa]").val('');
-		$(form).find("input[name=votosValidos]").val('');
-		$(form).find("input[name=votosNulos]").val('');
-		$(form).find("input[name=votosBlancos]").val('');
-		$(form).find("fieldset").prop('disabled', true);
-	}
 	// Cambia el mensaje de error de un campo requerido
 	$.validator.messages.required = 'Este campo es requerido.';
 	// Funcion para validar formularios
@@ -62,17 +54,38 @@ $(document).ready(function() {
 			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
 		},
 		submitHandler: function(form) {
-			$(form).submit(function(e) {
+			/*$(form).submit(function(e) {
 				e.preventDefault();
 				$.post($(form).attr('action'), $(form).serialize(), function(data) {
 					if (data.codigo == 1) {
+						bloquearControles(form);
 						alert(data.msg);
-						bloquearControles($(form));
 					} else if (data.codigo == 2) {
 						alert(data.msg);
 					}
 				}, 'json');
+			});*/
+			$.ajax({ 
+				data: $(form).serialize(),
+				type: $(form).attr('method'), 
+				dataType: "json",
+				url: $(form).attr('action'), 
+				success: function(data) {
+					alert(data.msg);
+					bloquearControles(form);
+				}
 			});
+			return false;
 		}
 	});
+
+	// Funcion para bloquear los controles del formulario actual
+
+	function bloquearControles(form) {
+		$(form).find('input[name=NoActa]').val('');
+		$(form).find('input[name=VotosValidos]').val('');
+		$(form).find('input[name=VotosNulos]').val('');
+		$(form).find('input[name=VotosBlancos]').val('');
+		$(form).find('fieldset').prop('disabled', true);
+	}
 });
