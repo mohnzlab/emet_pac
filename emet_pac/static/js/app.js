@@ -54,25 +54,18 @@ $(document).ready(function() {
 			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
 		},
 		submitHandler: function(form) {
-			/*$(form).submit(function(e) {
-				e.preventDefault();
-				$.post($(form).attr('action'), $(form).serialize(), function(data) {
-					if (data.codigo == 1) {
-						bloquearControles(form);
-						alert(data.msg);
-					} else if (data.codigo == 2) {
-						alert(data.msg);
-					}
-				}, 'json');
-			});*/
 			$.ajax({ 
 				data: $(form).serialize(),
 				type: $(form).attr('method'), 
 				dataType: "json",
 				url: $(form).attr('action'), 
 				success: function(data) {
-					alert(data.msg);
-					bloquearControles(form);
+					if (data.codigo == 1) {
+						alert(data.msg);
+						bloquearControles(form);	
+					} else if (data.codigo == 2) {
+						alert(data.msg);
+					}
 				}
 			});
 			return false;
