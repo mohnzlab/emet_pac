@@ -24,4 +24,7 @@ urlpatterns = patterns('',
     url(r'^main/Diputados/ActaDiputado/$', 'emet.views.ActaDiputadoAdd', name="ActaDiputadoAdd"),
     url(r'^main/Alcaldes/ActaAlcalde/$', 'emet.views.ActaAlcaldeAdd', name="ActaAlcaldeAdd"),
     url(r'^logout_/', 'emet.views.salir', name="salir"),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root':settings.MEDIA_ROOT},
+        ),
 )

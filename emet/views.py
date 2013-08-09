@@ -7,6 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesForm
 from django.utils import simplejson
+from emet.models import RepPresidentes, Movimientos
 
 def home(request):
 	if not request.user.is_anonymous():
@@ -47,8 +48,8 @@ def mainAlcaldes(request):
 @login_required(login_url='/login/')
 def mainPresidentes(request):
 	formi = ActasPresidentesForm()
-
-	return render_to_response('mainPresidentes.html', {'formi' : formi}, context_instance=RequestContext(request))
+	AllPresidentes = RepPresidentes.objects.all().select_related('Movimientos')
+	return render_to_response('mainPresidentes.html', {'TPresidentes' : AllPresidentes, 'formi' : formi}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def salir(request):
