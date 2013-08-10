@@ -1,4 +1,6 @@
+
 $(document).ready(function() {
+
 	// Desactiva el campo de texto noMer
 	$('#noMer').focusout(function() {
 		$('#noMer').prop('disabled', true);
@@ -11,7 +13,9 @@ $(document).ready(function() {
 		$('#btnNuevoMer').tooltip('destroy');
 		$('#noMer').val('');
 		$('input[name=noMer]').val('');
+		ocultarMensajes();
 	});
+
 	// Funcion para aceptar solo numeros en input boxes
 	$(".numero").keydown(function(event) {
 		// Permitir: backspace, delete, tab, escape, y enter
@@ -29,48 +33,56 @@ $(document).ready(function() {
 			}
 		}
 	});
+	//Obtener Id del form submited
+	$("button").on('click', function() {
+		// var $form = $(this.form);
+		var id = "#" + $(this).closest("form").attr('id');
+
+		$(id).validate({
+			rules: {
+				NoActa: {
+					required: true
+				},
+				VotosValidos: {
+					required: true
+				},
+				VotosNulos: {
+					required: true
+				},
+				VotosBlancos: {
+					required: true
+				}
+			},
+			highlight: function(element) {
+				$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			},
+			success: function(element) {
+				$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+			},
+			submitHandler: function(form) {
+				$.ajax({
+					data: $(form).serialize(),
+					type: $(form).attr('method'),
+					dataType: "json",
+					url: $(form).attr('action'),
+					success: function(data) {
+						if (data.codigo == 1) {
+							bloquearControles(form);
+							mostrarMensaje(form, "<strong>Genial!</strong> El registro se guardo correctamente.", "alert-success");
+						} else if (data.codigo == 2) {
+							mostrarMensaje(form, "<strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.", "alert-success");
+						}
+					}
+				});
+				return false;
+			}
+		});
+	});
+
+
 	// Cambia el mensaje de error de un campo requerido
 	$.validator.messages.required = 'Este campo es requerido.';
 	// Funcion para validar formularios
-	$('#formN').validate({
-		rules: {
-			noMer: {
-				required: true
-			},
-			votosValidos: {
-				required: true
-			},
-			votosNulos: {
-				required: true
-			},
-			votosBlancos: {
-				required: true
-			}
-		},
-		highlight: function(element) {
-			$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-		},
-		success: function(element) {
-			$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-		},
-		submitHandler: function(form) {
-			$.ajax({ 
-				data: $(form).serialize(),
-				type: $(form).attr('method'), 
-				dataType: "json",
-				url: $(form).attr('action'), 
-				success: function(data) {
-					if (data.codigo == 1) {
-						alert(data.msg);
-						bloquearControles(form);	
-					} else if (data.codigo == 2) {
-						alert(data.msg);
-					}
-				}
-			});
-			return false;
-		}
-	});
 
 	// Funcion para bloquear los controles del formulario actual
 
@@ -81,4 +93,15 @@ $(document).ready(function() {
 		$(form).find('input[name=VotosBlancos]').val('');
 		$(form).find('fieldset').prop('disabled', true);
 	}
+
+	function mostrarMensaje(form, mensaje, tipo) {
+		$(form).find(".alert").addClass(tipo).append(mensaje);
+		$(form).find(".alert").slideDown(200);
+	}
+
+	function ocultarMensajes() {
+		$(".alert").slideUp(200);
+	}
+
+
 });
