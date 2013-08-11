@@ -18,6 +18,7 @@ class RepAlcaldes(models.Model):
 	RepAlcaldeCodigo = models.CharField(max_length=10, help_text='Codigo del Candidato a Alcalde', verbose_name=u'Codigo')
 	RepImagen = models.ImageField(upload_to='alcaldes', verbose_name=u'Imagen')
 	FechaRegistro = models.DateTimeField(auto_now=True, auto_now_add=True, help_text='Fecha de Registro', verbose_name=u'Fecha')
+	OrdenRepAlcaldes = models.IntegerField(max_length=11, help_text='Orden a Mostrar', verbose_name=u'Orden')
 
 	def __unicode__(self):
 		return self.RepAlcaldeNombre
@@ -29,6 +30,7 @@ class RepDiputados(models.Model):
 	RepDiputadoCodigo = models.CharField(max_length=50, help_text='Codigo del Candidato a Diputado', verbose_name=u'Codigo')
 	RepDiputadoImagen = models.ImageField(upload_to='diputados', verbose_name=u'Imagen')
 	FechaRegistro = models.DateTimeField(auto_now=True, auto_now_add=True, help_text='Fecha de Registro', verbose_name=u'Fecha')
+	OrdenRepDiputados = models.IntegerField(max_length=11, help_text='Orden a Mostrar', verbose_name=u'Orden')
 
 	def __unicode__(self):
 		return self.RepDiputadoNombre
@@ -40,6 +42,7 @@ class RepPresidentes(models.Model):
 	RepPresidenteCodigo = models.CharField(max_length=50, help_text='Codigo del Candidato a Presidente', verbose_name=u'Codigo')
 	RepPresidenteImagen = models.ImageField(upload_to="presidentes", verbose_name=u'Imagen')
 	FechaRegistro = models.DateTimeField(auto_now=True, auto_now_add=True, help_text='Fecha de Registro', verbose_name=u'Fecha')
+	OrdenRepPresidentes = models.IntegerField(max_length=11, help_text='Orden a Mostrar', verbose_name=u'Ordens')
 
 	def __unicode__(self):
 		return self.RepPresidenteNombre

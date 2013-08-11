@@ -48,7 +48,7 @@ def mainAlcaldes(request):
 @login_required(login_url='/login/')
 def mainPresidentes(request):
 	formi = ActasPresidentesForm()
-	AllPresidentes = RepPresidentes.objects.all().select_related('Movimientos')
+	AllPresidentes = RepPresidentes.objects.all().select_related('Movimientos').order_by('OrdenRepPresidentes')
 	return render_to_response('mainPresidentes.html', {'TPresidentes' : AllPresidentes, 'formi' : formi}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
