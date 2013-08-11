@@ -6,30 +6,30 @@
     <div class="form-group">
       <h3><label for="noMet" class="col-lg-2 control-label"># MER:</label></h3>
       <div class="col-6 col-sm-4 col-lg-4">
-        <input type="number" class="form-control numero" id="noMer" placeholder="#" disabled>
+        <input type="input" class="form-control numero" id="noMer" placeholder="#" disabled>
       </div>
       <div class="col-6 col-sm-4 col-lg-4">
-         <button id="btnNuevoMer" class="btn btn-primary" type="button" data-animation="true" data-placement="right" title="Presiona este boton para ingresar un nuevo numero de acta">Nuevo</button> 
-      </div>
-    </div>
-  </form>
-  <div class="panel panel-primary">
-    <div class="panel-heading">Conteo de Votos de Presidentes</div>
-    <section id="contenidoPrimario">
-      <div class="row">
-        <div class="col-lg-9">
-          <div class="container">
+       <button id="btnNuevoMer" class="btn btn-primary" type="button" data-animation="true" data-placement="right" title="Presiona este boton para ingresar un nuevo numero de acta">Nuevo</button> 
+     </div>
+   </div>
+ </form>
+ <div class="panel panel-primary">
+  <div class="panel-heading">Conteo de Votos de Presidentes</div>
+  <section id="contenidoPrimario">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="container">
           {% for Presidente in TPresidentes %}
-            <div class="row">
-              <div class="col-lg-4">
-                <a href="#"><img src="{{MEDIA_URL}}{{Presidente.RepPresidenteImagen}}" class="imagenRedonda" alt="Salvador Nasralla (PAC)"></a>
-                <p>| {{Presidente.RepPresidenteNombre}} 
+          <div class="row">
+            <div class="col-lg-4">
+              <a href="#"><img src="{{MEDIA_URL}}{{Presidente.RepPresidenteImagen}}" class="imagenRedonda" alt="Salvador Nasralla (PAC)"></a>
+              <p>| {{Presidente.RepPresidenteNombre}} 
                 ({{Presidente.MovimientoID.MovimientoCodigo}})
-                </p>
-              </div>
-              <div class="col-lg-6">
-                <form id="formN" class="form-inline" action="ActaPresidente/" method="POST">{% csrf_token %}
-                  <fieldset>
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <form id="formN{{Presidente.RepPresidenteID}}" class="form-inline" action="ActaPresidente/" method="POST">{% csrf_token %}
+                <fieldset>
                   <div class="row">
                     <div class="form-group col-lg-6">
                       <input type="text" class="form-control" name="NoActa" placeholder="# MER" readonly>
@@ -41,29 +41,33 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label" for="VotosValidos">Votos Validos:</label>
-                    <input type="number" class="form-control numero" name="VotosValidos" placeholder="Votos Validos">
+                    <input type="input" class="form-control numero" name="VotosValidos" placeholder="Votos Validos">
                   </div>
                   <div class="form-group">
                     <label class="control-label" for="VotosNulos">Votos Nulos:</label>
-                    <input type="number" class="form-control numero" name="VotosNulos" placeholder="Votos Nulos">
+                    <input type="input" class="form-control numero" name="VotosNulos" placeholder="Votos Nulos">
                   </div>
                   <div class="form-group">
                     <label class="control-label" for="VotosBlancos">Votos Blancos:</label>
-                    <input type="number" class="form-control numero" name="VotosBlancos" placeholder="Votos Blancos">
+                    <input type="input" class="form-control numero" name="VotosBlancos" placeholder="Votos Blancos">
                   </div>
-                  <button class="btn btn-primary" type="submit">Guardar</button> 
+                  <div class="alert" hidden>  
+                    <a class="close" data-dismiss="alert">×</a>  
+                    <!-- <strong>Genial!</strong> El registro se guardo correctamente.   -->
+                  </div>
+                  <button id="target{{Presidente.RepPresidenteID}}" class="btn btn-primary" type="submit">Guardar</button> 
                 </form>
-                </fieldset>
-              </div>
+              </fieldset>
             </div>
-            <hr>
-            {% empty %}
-            <p>| No hay presidentes en el sistema.</p>
-            {% endfor %}
+          </div>
+          <hr>
+          {% empty %}
+          <p>| No hay presidentes registrados en el sistema.</p>
+          {% endfor %}
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </div>
 
 </div>
