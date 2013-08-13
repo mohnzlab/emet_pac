@@ -18,25 +18,34 @@ def home(request):
 		return render_to_response('home.html', {'formulario':formulario}, context_instance=RequestContext(request))
 
 def ingresar(request):
-	if not request.user.is_anonymous():
-		return HttpResponseRedirect('/main/')
-	if request.method=='POST':
-		formulario = AuthenticationForm(request.POST)
-		if formulario.is_valid:
-			usuario = request.POST['username']
-			clave = request.POST['password']
-			acceso = authenticate(username=usuario, password=clave)
-			if acceso is not None:
-				if acceso.is_active:
-					login(request, acceso)
-					return HttpResponseRedirect('/')
+	if request.is_ajax():
+		if not request.user.is_anonymous():
+			# return HttpResponseRedirect('/main/')
+			respuesta = {'codigo': 1, 'msg': 'Redireccionar'}
+			return HttpResponse(simplejson.dumps(respuesta))
+		if request.method=='POST':
+			formulario = AuthenticationForm(request.POST)
+			if formulario.is_valid:
+				usuario = request.POST['username']
+				clave = request.POST['password']
+				acceso = authenticate(username=usuario, password=clave)
+				if acceso is not None:
+					if acceso.is_active:
+						login(request, acceso)
+						respuesta = {'codigo': 1, 'msg': 'Bienvenido, redirecionar'}
+						return HttpResponse(simplejson.dumps(respuesta))
+						# return HttpResponseRedirect('/')
+					else:
+						respuesta = {'codigo': 2, 'msg': 'Este usuario no tiene permisos para acceder'}
+						return HttpResponse(simplejson.dumps(respuesta))
+						# return render_to_response('noactivo.html', context_instance=RequestContext(request))
 				else:
-					return render_to_response('noactivo.html', context_instance=RequestContext(request))
-			else:
-				return render_to_response('nousuario.html', context_instance=RequestContext(request))
-	else:
-		formulario = AuthenticationForm()
-		return render_to_response('home.html', {'formulario':formulario}, context_instance=RequestContext(request))
+					respuesta = {'codigo': 3, 'msg': 'Error de usuario y/o contrasena'}
+					return HttpResponse(simplejson.dumps(respuesta))
+					# return render_to_response('nousuario.html', context_instance=RequestContext(request))
+		else:
+			formulario = AuthenticationForm()
+			return render_to_response('home.html', {'formulario':formulario}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def main(request):
