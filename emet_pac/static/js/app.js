@@ -70,7 +70,7 @@ $(document).ready(function() {
 							bloquearControles(form);
 							mostrarMensaje(form, "<strong>Genial!</strong> El registro se guardo correctamente.", "alert-success");
 						} else if (data.codigo == 2) {
-							mostrarMensaje(form, "<strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.", "alert-success");
+							mostrarMensaje(form, "<strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.", "alert-danger");
 						}
 					}
 				});

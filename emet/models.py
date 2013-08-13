@@ -1,6 +1,7 @@
 #encoding:utf-8
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class Movimientos(models.Model):
 	MovimientoID = models.AutoField(primary_key=True)
@@ -55,7 +56,7 @@ class ActasPresidentes(models.Model):
 	VotosValidos = models.IntegerField(max_length=11, help_text='Votos Validos', verbose_name=u'Votos Validos')
 	VotosBlancos = models.IntegerField(max_length=11, help_text='Votos Blancos', verbose_name=u'Votos Blancos')
 	VotosNulos = models.IntegerField(max_length=11, help_text='Votos Nulos', verbose_name=u'Votos Nulos')
-	FechaRegistro = models.DateTimeField(auto_now=True, auto_now_add=True, help_text='Fecha de Registro', verbose_name=u'Fecha')
+	FechaRegistro = models.DateTimeField(auto_now_add=True, default=datetime.now(), help_text='Fecha de Registro', verbose_name=u'Fecha')
 
 	def __unicode__(self):
 		return self.NoActa

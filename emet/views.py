@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesForm
 from django.utils import simplejson
 from emet.models import RepPresidentes, Movimientos
+from datetime import datetime
 
 def home(request):
 	if not request.user.is_anonymous():
@@ -28,7 +29,7 @@ def ingresar(request):
 			if acceso is not None:
 				if acceso.is_active:
 					login(request, acceso)
-					return HttpResponseRedirect('/main/')
+					return HttpResponseRedirect('/')
 				else:
 					return render_to_response('noactivo.html', context_instance=RequestContext(request))
 			else:
@@ -60,9 +61,10 @@ def salir(request):
 def ActaPresidenteAdd(request):
 	if request.is_ajax():
 		if request.method == 'POST':
-			form = ActasPresidentesForm(data=request.POST)
-			if form.is_valid():
-				u = form.save(commit=False)
+			formi = ActasPresidentesForm(data=request.POST)
+			if formi.is_valid():
+				u = formi.save(commit=False)
+				u.FechaRegistro = datetime.now()
 				u.save()
 				respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
 				return HttpResponse(simplejson.dumps(respuesta))
