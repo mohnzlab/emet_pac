@@ -14,6 +14,7 @@ $(document).ready(function() {
 		$('#noMer').val('');
 		$('input[name=noMer]').val('');
 		ocultarMensajes();
+		desbloquearControles(true);
 	});
 
 	// Funcion para aceptar solo numeros en input boxes
@@ -67,10 +68,10 @@ $(document).ready(function() {
 					url: $(form).attr('action'),
 					success: function(data) {
 						if (data.codigo == 1) {
-							bloquearControles(form);
-							mostrarMensaje(form, "<strong>Genial!</strong> El registro se guardo correctamente.", "alert-success");
+							bloquearControles(form, false);
+							mostrarMensaje(form, "<span id='alertContenido'><strong>Genial!</strong> El registro se guardo correctamente.</span>", "alert-success");
 						} else if (data.codigo == 2) {
-							mostrarMensaje(form, "<strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.", "alert-danger");
+							mostrarMensaje(form, "<span id='alertContenido'><strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.</span>", "alert-danger");
 						}
 					}
 				});
@@ -86,21 +87,38 @@ $(document).ready(function() {
 
 	// Funcion para bloquear los controles del formulario actual
 
-	function bloquearControles(form) {
-		$(form).find('input[name=NoActa]').val('');
-		$(form).find('input[name=VotosValidos]').val('');
-		$(form).find('input[name=VotosNulos]').val('');
-		$(form).find('input[name=VotosBlancos]').val('');
+	function bloquearControles(form, isClean) {
 		$(form).find('fieldset').prop('disabled', true);
+		if (isClean) {
+			$(form).find('input[name=NoActa]').val('');
+			$(form).find('input[name=VotosValidos]').val('');
+			$(form).find('input[name=VotosNulos]').val('');
+			$(form).find('input[name=VotosBlancos]').val('');
+		};
 	}
-
+	// Funcion para habilitar edicion en controles de ingreso de formulario
+	function desbloquearControles(isClean) {
+		var form = $('form');
+		$(form).find('fieldset').prop('disabled',false);
+		$(form).find('.form-group').removeClass('has-success');
+		$(form).find('.form-group').removeClass('has-error');
+		if (isClean) {
+			$(form).find('input[name=NoActa]').val('');
+			$(form).find('input[name=VotosValidos]').val('');
+			$(form).find('input[name=VotosNulos]').val('');
+			$(form).find('input[name=VotosBlancos]').val('');
+		};
+	}
+	// Funcion para mostrar mensajes
 	function mostrarMensaje(form, mensaje, tipo) {
 		$(form).find(".alert").addClass(tipo).append(mensaje);
 		$(form).find(".alert").slideDown(200);
 	}
-
+	// Funcion para ocultar mensajes
 	function ocultarMensajes() {
 		$(".alert").slideUp(200);
+		$("#alertContenido").remove();
+		
 	}
 
 
