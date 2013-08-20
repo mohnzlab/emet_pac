@@ -1,6 +1,26 @@
 
 $(document).ready(function() {
-
+	// Inicio de Sesion de Usuarios
+	var formLogin = $("#frmLogin");
+	$(formLogin).on('submit',function(){
+		ocultarMensajes();
+			$.ajax({
+					data: $(formLogin).serialize(),
+					type: $(formLogin).attr('method'),
+					dataType: "json",
+					url: $(formLogin).attr('action'),
+					success: function(data) {
+						if (data.codigo == 3) {
+							mostrarMensaje(formLogin, "<span class='alertContenido'><strong>Alto!</strong> El usuario o contraseña ingresado no es valido.</span>", "alert-danger");
+						} else if (data.codigo == 2) {
+							mostrarMensaje(formLogin, "<span class='alertContenido'><strong>Alto!</strong> El usuario ingresado no esta activado.</span>", "alert-danger");
+						} else if (data.codigo == 1) {
+							window.location = '/main/';
+						}
+					}
+				});
+				return false;
+	});
 	// Desactiva el campo de texto noMer
 	$('#noMer').focusout(function() {
 		$('#noMer').prop('disabled', true);
@@ -10,6 +30,7 @@ $(document).ready(function() {
 	// Activa el campo de texto noMer
 	$('#btnNuevoMer').click(function() {
 		$('#noMer').removeAttr('disabled');
+		$('#noMer').focus();
 		$('#btnNuevoMer').tooltip('destroy');
 		$('#noMer').val('');
 		$('input[name=noMer]').val('');
@@ -35,8 +56,7 @@ $(document).ready(function() {
 		}
 	});
 	//Obtener Id del form submited
-	$("button").on('click', function() {
-		// var $form = $(this.form);
+	$("button[Id]").closest("button").on('click', function() {
 		var id = "#" + $(this).closest("form").attr('id');
 
 		$(id).validate({
@@ -69,11 +89,11 @@ $(document).ready(function() {
 					success: function(data) {
 						if (data.codigo == 1) {
 							bloquearControles(form, false);
-							mostrarMensaje(form, "<span id='alertContenido'><strong>Genial!</strong> El registro se guardo correctamente.</span>", "alert-success");
+							mostrarMensaje(form, "<span class='alertContenido'><strong>Genial!</strong> El registro se guardo correctamente.</span>", "alert-success");
 						} else if (data.codigo == 2) {
-							mostrarMensaje(form, "<span id='alertContenido'><strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.</span>", "alert-danger");
+							mostrarMensaje(form, "<span class='alertContenido'><strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.</span>", "alert-danger");
 						} else if(data.codigo == 3) {
-							mostrarMensaje(form, "<span id='alertContenido'><strong>Alto!</strong> ERROR, Acta duplicada.</span>", "alert-danger");
+							mostrarMensaje(form, "<span class='alertContenido'><strong>Alto!</strong> ERROR, Acta duplicada.</span>", "alert-danger");
 						}
 					}
 				});
@@ -85,7 +105,6 @@ $(document).ready(function() {
 
 	// Cambia el mensaje de error de un campo requerido
 	$.validator.messages.required = 'Este campo es requerido.';
-	// Funcion para validar formularios
 
 	// Funcion para bloquear los controles del formulario actual
 
@@ -116,12 +135,14 @@ $(document).ready(function() {
 		$(form).find(".alert").addClass(tipo).append(mensaje);
 		$(form).find(".alert").slideDown(200);
 	}
+
 	// Funcion para ocultar mensajes
 	function ocultarMensajes() {
+		$(".alert").removeClass("alert-danger");
+		$(".alertContenido").remove();
 		$(".alert").slideUp(200);
-		$("#alertContenido").remove();
-		
 	}
+
 
 
 });

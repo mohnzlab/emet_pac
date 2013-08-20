@@ -13,7 +13,7 @@
     <a id="tituloNavBar" class="navbar-brand" href="/">emet</a>
      {% if user.is_authenticated %}
     <a class="btn btn-danger navbar-btn" href="/logout_/">Cerrar Sesion</a>
-    <p id="usuario" class="navbar-text pull-right">Inició Sesion como {{ user.username }}</p>
+    <p id="usuario" class="navbar-text pull-right">Inició Sesion como <strong>{{ user.username }}</strong></p>
     {% endif %}
   </div>
   <div id="wrap">
