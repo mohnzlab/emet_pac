@@ -72,6 +72,8 @@ $(document).ready(function() {
 							mostrarMensaje(form, "<span id='alertContenido'><strong>Genial!</strong> El registro se guardo correctamente.</span>", "alert-success");
 						} else if (data.codigo == 2) {
 							mostrarMensaje(form, "<span id='alertContenido'><strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.</span>", "alert-danger");
+						} else if(data.codigo == 3) {
+					mostrarMensaje(form, "<strong>Oh no :'( !</strong> ERROR, Acta duplicada.", "alert-danger");
 						}
 					}
 				});
