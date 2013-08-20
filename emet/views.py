@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesForm
 from django.utils import simplejson
-from emet.models import RepPresidentes, Movimientos
+from emet.models import RepPresidentes, Movimientos, ActasPresidentes
 from datetime import datetime
 
 def home(request):
@@ -70,15 +70,20 @@ def salir(request):
 def ActaPresidenteAdd(request):
 	if request.is_ajax():
 		if request.method == 'POST':
-			formi = ActasPresidentesForm(data=request.POST)
-			if formi.is_valid():
-				u = formi.save(commit=False)
-				u.FechaRegistro = datetime.now()
-				u.save()
-				respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
-				return HttpResponse(simplejson.dumps(respuesta))
+			NumActaCount = ActasPresidentes.objects.filter(NoActa=request.POST['NoActa'], RepPresidenteID=request.POST['RepPresidenteID']).count()
+			if NumActaCount < 1:
+				formi = ActasPresidentesForm(data=request.POST)
+				if formi.is_valid():
+					u = formi.save(commit=False)
+					u.FechaRegistro = datetime.now()
+					u.save()
+					respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
+					return HttpResponse(simplejson.dumps(respuesta))
+				else:
+					respuesta = {'codigo': 2, 'msg': 'No se ha podido guardar el acta '}
+					return HttpResponse(simplejson.dumps(respuesta))
 			else:
-				respuesta = {'codigo': 2, 'msg': 'No se ha podido guardar el acta '}
+				respuesta = {'codigo': 3, 'msg': 'ERROR, esta acta ya habia sido guardada.'}
 				return HttpResponse(simplejson.dumps(respuesta))
 
 @login_required(login_url='/login/')
