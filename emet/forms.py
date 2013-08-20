@@ -14,4 +14,3 @@ class ActasDiputadosForm(ModelForm):
 class ActasAlcaldesForm(ModelForm):
 	class Meta:
 		model = ActasAlcaldes
-		exclude = ('UsuarioEmetID', )

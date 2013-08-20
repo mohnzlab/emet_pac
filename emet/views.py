@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesForm
 from django.utils import simplejson
-from emet.models import RepPresidentes, Movimientos, ActasPresidentes
+from emet.models import RepPresidentes, Movimientos, ActasPresidentes, ActasAlcaldes, RepAlcaldes
 from datetime import datetime
 
 def home(request):
@@ -53,7 +53,9 @@ def main(request):
 
 @login_required(login_url='/login/')
 def mainAlcaldes(request):
-	return render_to_response('mainAlcaldes.html', context_instance=RequestContext(request))
+	formi = ActasAlcaldes()
+	AllAlcaldes = RepAlcaldes.objects.all().select_related('Movimientos').order_by('OrdenRepAlcaldes')
+	return render_to_response('mainAlcaldes.html', {'TAlcaldes' : AllAlcaldes, 'formi' : formi}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def mainPresidentes(request):
@@ -88,31 +90,24 @@ def ActaPresidenteAdd(request):
 
 @login_required(login_url='/login/')
 def ActaDiputadoAdd(request):
-	if request.is_ajax():
-		if request.method == 'POST':
-			form = ActasDiputadosForm(data=request.POST)
-			if form.is_valid():
-				u = form.save(commit=False)
-				user2 = request.user
-				u.UsuarioEmetID = user2.pk
-				u.save()
-
-				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
-				return HttpResponse(simplejson.dumps(respuesta))
-			else:
-				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
-				return HttpResponse(simplejson.dumps(respuesta))
+	pass
 
 @login_required(login_url='/login/')
 def ActaAlcaldeAdd(request):
 	if request.is_ajax():
 		if request.method == 'POST':
-			form = ActasAlcaldesForm(data=request.POST)
-			if form.is_valid():
-				u = form.save()
-
-				respuesta = {'codigo': 1, 'msg': 'La ubicacion fue guardada'}
-				return HttpResponse(simplejson.dumps(respuesta))
+			NumActaCount = ActasAlcaldes.objects.filter(NoActa=request.POST['NoActa'], RepAlcaldeID=request.POST['RepAlcaldeID']).count()
+			if NumActaCount < 1:
+				formi = ActasAlcaldesForm(data=request.POST)
+				if formi.is_valid():
+					u = formi.save(commit=False)
+					u.FechaRegistro = datetime.now()
+					u.save()
+					respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
+					return HttpResponse(simplejson.dumps(respuesta))
+				else:
+					respuesta = {'codigo': 2, 'msg': 'No se ha podido guardar el acta '}
+					return HttpResponse(simplejson.dumps(respuesta))
 			else:
-				respuesta = {'codigo': 2, 'msg': 'Faltan datos'}
+				respuesta = {'codigo': 3, 'msg': 'ERROR, esta acta ya habia sido guardada.'}
 				return HttpResponse(simplejson.dumps(respuesta))

@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
 {% block titulo %} emet | Alcaldes {% endblock %}
-{% block usuarioInfo %} 
-  <p id="usuario" class="navbar-text pull-right">Inicio Sesion como Ramon Zuniga</p>
-{% endblock %}
 {% block contenido %}
 <div class="container">
     <form class="form-horizontal">
@@ -22,68 +19,48 @@
         <div class="row">
           <div class="col-lg-9">
             <div class="container">
+            {% for Alcalde in TAlcaldes %}
               <div class="row">
                 <div class="col-lg-4">
-                  <a href="#"><img src="{{STATIC_URL}}img/salvador.jpg" class="imagenRedonda" alt=""></a>
-                  <p>| Salvador Nasralla (PAC)</p>
+                  <a href="#"><img src="{{MEDIA_URL}}{{Alcalde.RepImagen}}" class="imagenRedonda" alt=""></a>
+                  <p>| {{Alcalde.RepAlcaldeNombre}}  ({{Alcalde.MovimientoID.MovimientoCodigo}})</p>
                 </div>
                 <div class="col-lg-6">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
+                  <form id="formN{{Alcalde.RepAlcaldeID}}" class="form-inline" action="ActaAlcalde/" method="POST">{% csrf_token %}
+                    <fieldset>
+                  <div class="row">
+                    <div class="form-group col-lg-6">
+                      <input type="text" class="form-control" name="NoActa" placeholder="# MER" readonly>
                     </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+                    <div class="form-group col-lg-6">
+                      <input type="hidden" class="form-control" name="RepAlcaldeID" value='{{Alcalde.RepAlcaldeID}}' readonly>
+                      <input type="hidden" name="UsuarioEmetID" value="{{ user.id }}">
                     </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                    </div>
-                    <button class="btn btn-primary" type="submit">Guardar</button> 
-                  </form>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-lg-4">
-                 <a href="#"><img src="{{STATIC_URL}}img/juanorlando.jpg" class="imagenRedonda" alt=""></a>
-                 <p>| Juan Orlando Hernandez (PN)</p>
-               </div>
-               <div class="col-lg-6">
-                <form class="form-inline">
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
+                    <label class="control-label" for="VotosValidos">Votos Validos:</label>
+                    <input type="input" class="form-control numero" name="VotosValidos" placeholder="Votos Validos" autocomplete="off">
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
+                    <label class="control-label" for="VotosNulos">Votos Nulos:</label>
+                    <input type="input" class="form-control numero" name="VotosNulos" placeholder="Votos Nulos" autocomplete="off">
                   </div>
-                  <button class="btn btn-primary" type="submit">Guardar</button> 
+                  <div class="form-group">
+                    <label class="control-label" for="VotosBlancos">Votos Blancos:</label>
+                    <input type="input" class="form-control numero" name="VotosBlancos" placeholder="Votos Blancos" autocomplete="off">
+                  </div>
+                  <div class="alert" hidden>  
+                    <a class="close" data-dismiss="alert">×</a>                     
+                  </div>
+                  <button id="target{{Presidente.RepPresidenteID}}" class="btn btn-primary" type="submit">Guardar</button> 
                 </form>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-lg-4">
-               <a href="#"><img src="{{STATIC_URL}}img/xiomara.jpg" class="imagenRedonda" alt=""></a>
-               <p>| Xiomara Castro de Zelaya (Libre)</p>
-             </div>
-             <div class="col-lg-6">
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosValidos" placeholder="Votos Validos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosNulos" placeholder="Votos Nulos">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" id="votosBlancos" placeholder="Votos Blancos">
-                </div>
-                <button class="btn btn-primary" type="submit">Guardar</button> 
-              </form>
+              </fieldset>
             </div>
           </div>
+          <hr>
+          {% empty %}
+          <p>| No hay alcaldes registrados en el sistema.</p>
+          {% endfor %}
         </div>
       </div>
     </div>
