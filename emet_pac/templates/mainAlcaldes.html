@@ -1,71 +1,72 @@
-{% extends 'base.html' %}
-{% block titulo %} emet | Alcaldes {% endblock %}
-{% block contenido %}
-<div class="container">
-    <form class="form-horizontal">
-      <div class="form-group">
-        <h3><label for="noMet" class="col-lg-2 control-label"># MER:</label></h3>
-        <div class="col-6 col-sm-4 col-lg-4">
-          <input type="text" class="form-control" id="noMer" placeholder="#">
-        </div>
-        <div class="col-6 col-sm-4 col-lg-4">
-           <button class="btn btn-primary" type="submit">Nuevo</button> 
-        </div>
-      </div>
-    </form>
-    <div class="panel panel-primary">
-      <div class="panel-heading">Conteo de Votos de Alcaldes</div>
-      <section id="contenidoPrimario">
-        <div class="row">
-          <div class="col-lg-9">
-            <div class="container">
-            {% for Alcalde in TAlcaldes %}
-              <div class="row">
-                <div class="col-lg-4">
-                  <a href="#"><img src="{{MEDIA_URL}}{{Alcalde.RepImagen}}" class="imagenRedonda" alt=""></a>
-                  <p>| {{Alcalde.RepAlcaldeNombre}}  ({{Alcalde.MovimientoID.MovimientoCodigo}})</p>
-                </div>
-                <div class="col-lg-6">
-                  <form id="formN{{Alcalde.RepAlcaldeID}}" class="form-inline" action="ActaAlcalde/" method="POST">{% csrf_token %}
-                    <fieldset>
-                  <div class="row">
-                    <div class="form-group col-lg-6">
-                      <input type="text" class="form-control" name="NoActa" placeholder="# MER" readonly>
-                    </div>
-                    <div class="form-group col-lg-6">
-                      <input type="hidden" class="form-control" name="RepAlcaldeID" value='{{Alcalde.RepAlcaldeID}}' readonly>
-                      <input type="hidden" name="UsuarioEmetID" value="{{ user.id }}">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label" for="VotosValidos">Votos Validos:</label>
-                    <input type="input" class="form-control numero" name="VotosValidos" placeholder="Votos Validos" autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label" for="VotosNulos">Votos Nulos:</label>
-                    <input type="input" class="form-control numero" name="VotosNulos" placeholder="Votos Nulos" autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label" for="VotosBlancos">Votos Blancos:</label>
-                    <input type="input" class="form-control numero" name="VotosBlancos" placeholder="Votos Blancos" autocomplete="off">
-                  </div>
-                  <div class="alert" hidden>  
-                    <a class="close" data-dismiss="alert">×</a>                     
-                  </div>
-                  <button id="target{{Presidente.RepPresidenteID}}" class="btn btn-primary" type="submit">Guardar</button> 
-                </form>
-              </fieldset>
-            </div>
-          </div>
-          <hr>
-          {% empty %}
-          <p>| No hay alcaldes registrados en el sistema.</p>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-</div>
-{% endblock contenido %}
+	{% extends 'base.html' %}
+	{% block titulo %} emet | Alcaldes {% endblock %}
+	{% block contenido %}
+	<div class="container">
+	  <form class="form-horizontal">
+	    <div class="form-group">
+	      <h3><label for="noMet" class="col-lg-2 control-label"># MER:</label></h3>
+	      <div class="col-6 col-sm-4 col-lg-4">
+	        <input type="number" min="0" class="form-control numero" id="noMer" placeholder="#" disabled>
+	      </div>
+	      <div class="col-6 col-sm-4 col-lg-4">
+	       <button id="btnNuevoMer" class="btn btn-primary" type="button" data-animation="true" data-placement="right" title="Presiona este boton para ingresar un nuevo numero de acta">Nuevo</button> 
+	     </div>
+	   </div>
+	 </form>
+	 <div class="panel panel-primary">
+	  <div class="panel-heading">Conteo de Votos de Alcaldes</div>
+	  <section id="contenidoPrimario">
+	    <div class="row">
+	      <div class="col-lg-9">
+	        <div class="container">
+	        {% for Alcalde in TAlcaldes %}
+	          <div class="row">
+	            <div class="col-lg-4">
+	              <a href="#"><img src="{{MEDIA_URL}}{{Alcalde.RepImagen}}" class="imagenRedonda" alt="{{Alcalde.RepAlcaldeNombre}}"></a>
+	              <p>| {{Alcalde.RepAlcaldeNombre}} 
+	                ({{Alcalde.MovimientoID.MovimientoCodigo}})
+	              </p>
+	            </div>
+	             <div class="col-lg-6">
+	              <form id="formN{{Alcalde.RepAlcaldeID}}" class="form-inline" action="ActaAlcalde/" method="POST">{% csrf_token %}
+	                <fieldset>
+	                  <div class="row">
+	                    <div class="form-group col-lg-6">
+	                      <input type="text" class="form-control" name="NoActa" placeholder="# MER" readonly>
+	                    </div>
+	                    <div class="form-group col-lg-6">
+	                      <input type="hidden" class="form-control" name="RepAlcaldeID" value='{{Alcalde.RepAlcaldeID}}' readonly>
+	                      <input type="hidden" name="UsuarioEmetID" value="{{ user.id }}">
+	                    </div>
+	                  </div>
+	                  <div class="form-group">
+	                    <label class="control-label" for="VotosValidos">Votos Validos:</label>
+	                    <input type="number" min="0" class="form-control numero" name="VotosValidos" placeholder="Votos Validos" autocomplete="off">
+	                  </div>
+	                  <div class="form-group">
+	                    <label class="control-label" for="VotosNulos">Votos Nulos:</label>
+	                    <input type="number" min="0" class="form-control numero" name="VotosNulos" placeholder="Votos Nulos" autocomplete="off">
+	                  </div>
+	                  <div class="form-group">
+	                    <label class="control-label" for="VotosBlancos">Votos Blancos:</label>
+	                    <input type="number" min="0" class="form-control numero" name="VotosBlancos" placeholder="Votos Blancos" autocomplete="off">
+	                  </div>
+	                  <div class="alert" hidden>  
+	                    <a class="close" data-dismiss="alert">×</a>                     
+	                  </div>
+	                  <button id="target{{Alcalde.RepAlcaldeID}}" class="btn btn-primary" type="submit">Guardar</button> 
+	                </form>
+	              </fieldset>
+	            </div>
+	          </div>
+	          <hr>
+	          {% empty %}
+	          <p>| No hay Alcaldes registrados en el Sistema.</p>
+	          {% endfor %}
+	        </div>
+	      </div>
+	    </div>
+	  </section>
+	</div>
+	</div>
+	{% endblock contenido %}
