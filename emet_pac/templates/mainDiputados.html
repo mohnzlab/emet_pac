@@ -2,7 +2,7 @@
 	{% block titulo %} emet | Diputados {% endblock %}
 	{% block contenido %}
 	<div class="container">
-		<form class="form-horizontal">
+		<form class="form-horizontal" method="POST" action="Filtrar/">{% csrf_token %}
 			<div class="form-group">
 				<h3><label for="noMet" class="col-lg-2 control-label"># MER:</label></h3>
 				<div class="col-6 col-sm-4 col-lg-4">
@@ -15,11 +15,12 @@
 			<div class="form-group">
 				<h3><label for="movimiento" class="col-lg-2 control-label">Movimiento:</label></h3>
 				<div class="col-6 col-sm-6 col-lg-4">
-					<select class="form-control" id="movimiento" placeholder="Movimiento Politico">
-						<option>1:PAC</option>
-						<option>2:Partido Nacional</option>
-						<option>3:Partido Liberal</option>
-						<option>4:Libre</option>
+					<select class="form-control" id="movimiento" name="MovimientoID" placeholder="Movimiento Politico">
+					{% for Movimiento in TMovimientos %}
+						<option value="{{Movimiento.MovimientoID}}">{{Movimiento.MovimientoNombre}}</option>
+					{% empty %}
+					No hay Diputados registrados en el Sistema.
+					{% endfor %}
 					</select>
 				</div>
 			</div>
@@ -30,10 +31,9 @@
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="container">
-							{% for Diputado in TDiputados %}
 							<div class="row" style="border: 1px solid">
 								<div class="col-sm-4 col-lg-4">
-									<p>| {{Diputado.RepDiputadoNombre}} (#{{Diputado.OrdenRepDiputados}})
+									<p>| Nombre Diputado (#Orden)
 									</p>
 								</div>
 								<div class="col-sm-6">
@@ -61,9 +61,6 @@
 										</form>
 								</div>
 							</div>
-							{% empty %}
-							<p>| No hay Diputados registrados en el Sistema.</p>
-							{% endfor %}
 						</div>
 					</div>
 				</div>

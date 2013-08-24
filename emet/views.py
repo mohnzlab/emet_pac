@@ -9,6 +9,7 @@ from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesFo
 from django.utils import simplejson
 from emet.models import RepPresidentes, Movimientos, ActasPresidentes, ActasAlcaldes, RepAlcaldes, RepDiputados, ActasDiputados
 from datetime import datetime
+from django.core import serializers
 
 def home(request):
 	if not request.user.is_anonymous():
@@ -65,9 +66,9 @@ def mainPresidentes(request):
 
 @login_required(login_url='/login/')
 def mainDiputados(request):
-	formi = ActasDiputadosForm()
-	AllDiputados = RepDiputados.objects.all().select_related('Movimientos').order_by('OrdenRepDiputados')
-	return render_to_response('mainDiputados.html', {'TDiputados' : AllDiputados, 'formi' : formi}, context_instance=RequestContext(request))
+	AllMovimientos = Movimientos.objects.all().order_by('MovimientoNombre')
+	# AllDiputados = RepDiputados.objects.all().select_related('Movimientos').order_by('OrdenRepDiputados')
+	return render_to_response('mainDiputados.html', {'TMovimientos' : AllMovimientos}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def salir(request):
@@ -93,10 +94,6 @@ def ActaPresidenteAdd(request):
 			else:
 				respuesta = {'codigo': 3, 'msg': 'ERROR, esta acta ya habia sido guardada.'}
 				return HttpResponse(simplejson.dumps(respuesta))
-
-@login_required(login_url='/login/')
-def ActaDiputadoAdd(request):
-	pass
 
 @login_required(login_url='/login/')
 def ActaAlcaldeAdd(request):
@@ -137,3 +134,18 @@ def ActaDiputadoAdd(request):
 			else:
 				respuesta = {'codigo': 3, 'msg': 'ERROR, esta acta ya habia sido guardada.'}
 				return HttpResponse(simplejson.dumps(respuesta))
+
+@login_required(login_url='/login/')
+def FiltrarDiputados(request):
+	if request.is_ajax():
+		if request.method == 'POST':
+			DiputadosFiltrados = serializers.serialize('json', RepDiputados.objects.filter(MovimientoID=request.POST['MovimientoID']))
+			return HttpResponse(simplejson.dumps(DiputadosFiltrados))
+
+@login_required(login_url='/login/')
+def Reportes(request):
+	pass
+
+def prueba(request):
+	AllMovimientos = Movimientos.objects.all().order_by('MovimientoNombre')
+	return render_to_response('prueba.html', {'TMovimientos' : AllMovimientos}, context_instance=RequestContext(request))

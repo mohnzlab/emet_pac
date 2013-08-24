@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form action="/main/Diputados/Filtrar/" method="POST" name="frmFiltros">{% csrf_token %}
+		<select class="form-control" id="movimiento" name="MovimientoID" placeholder="Movimiento Politico">
+			{% for Movimiento in TMovimientos %}
+				<option value="{{Movimiento.MovimientoID}}">{{Movimiento.MovimientoNombre}}</option>
+			{% empty %}
+			No hay Diputados registrados en el Sistema.
+			{% endfor %}
+		</select>
+		<button  name="btnEnviar"  type="submit">Guardar</button>
+	</form>
+</body>
+</html>
