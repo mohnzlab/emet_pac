@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from emet.forms import ActasPresidentesForm, ActasDiputadosForm, ActasAlcaldesForm
 from django.utils import simplejson
-from emet.models import RepPresidentes, Movimientos, ActasPresidentes, ActasAlcaldes, RepAlcaldes
+from emet.models import RepPresidentes, Movimientos, ActasPresidentes, ActasAlcaldes, RepAlcaldes, RepDiputados, ActasDiputados
 from datetime import datetime
 
 def home(request):
@@ -62,6 +62,12 @@ def mainPresidentes(request):
 	formi = ActasPresidentesForm()
 	AllPresidentes = RepPresidentes.objects.all().select_related('Movimientos').order_by('OrdenRepPresidentes')
 	return render_to_response('mainPresidentes.html', {'TPresidentes' : AllPresidentes, 'formi' : formi}, context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def mainDiputados(request):
+	formi = ActasDiputadosForm()
+	AllDiputados = RepDiputados.objects.all().select_related('Movimientos').order_by('OrdenRepDiputados')
+	return render_to_response('mainDiputados.html', {'TDiputados' : AllDiputados, 'formi' : formi}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def salir(request):
