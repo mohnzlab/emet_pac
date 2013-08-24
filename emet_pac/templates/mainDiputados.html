@@ -31,29 +31,30 @@
 					<div class="col-lg-6">
 						<div class="container">
 							{% for Diputado in TDiputados %}
-							<div class="row" style="border: 1px solid">
-								<div class="col-sm-4 col-lg-4">
-									<p>| {{Diputado.RepDiputadoNombre}} (#{{Diputado.OrdenRepDiputados}})
-									</p>
+							<div class="row cajaVotosDip" style="border: 1px solid blue; border-radius: 4px; margin-bottom:2em; padding: 10px">
+								<div class="col-sm-4">
+									<b><span>| {{Diputado.RepDiputadoNombre}} (#{{Diputado.OrdenRepDiputados}})
+									</span></b>
+									<div># MER: </div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-8">
 									<form id="formN{{Diputado.RepDiputadoID}}" class="form-horizontal" action="ActaDiputado/" method="POST">{% csrf_token %}
 											<div class="row">
 												<div class="col-6 col-sm-6 col-lg-6">
 													<input type="number" min="0" class="form-control numero" name="Votos" placeholder="#Votos" autocomplete="off">
 												</div>
-												 <div class="col-6 col-sm-4 col-lg-4">
+												<div class="col-6 col-sm-4 col-lg-4">
+													<button id="target{{Diputado.RepDiputadoID}}" class="btn btn-primary" type="submit">Guardar</button>
+												</div> 
+												<div class="col-6 col-sm-4 col-lg-4">
+													<input type="hidden" class="form-control" name="UsuarioEmetID" value="{{ user.id }}" readonly>
+												</div>
+												<div class="col-6 col-sm-4 col-lg-4">
 													<input type="hidden" class="form-control" name="NoActa" placeholder="# MER" readonly>
 												</div>
 												<div class="col-lg-6 col-sm-4 col-lg-4">
 													<input type="hidden" class="form-control" name="RepDiputadoID" value='{{Diputado.RepDiputadoID}}' readonly>
 												</div>
-												<div class="col-6 col-sm-4 col-lg-4">
-													<input type="hidden" class="form-control" name="UsuarioEmetID" value="{{ user.id }}" readonly>
-												</div>
-												<div class="col-6 col-sm-4 col-lg-4">
-													<button id="target{{Diputado.RepDiputadoID}}" class="btn btn-primary" type="submit">Guardar</button>
-												</div> 
 											</div>
 											<div class="alert" hidden>  
 												<a class="close" data-dismiss="alert">×</a>

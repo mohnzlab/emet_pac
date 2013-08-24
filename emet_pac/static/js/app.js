@@ -1,5 +1,9 @@
 
 $(document).ready(function() {
+	// Cambiar el color del borde de la caja para ingreso de votos de diputados
+	$(".cajaVotosDip").on('click', function() {
+		$(this).css('border','1px solid green');
+	});
 	// Inicio de Sesion de Usuarios
 	var formLogin = $("#frmLogin");
 	$(formLogin).on('submit',function(){
