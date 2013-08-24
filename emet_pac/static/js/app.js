@@ -1,9 +1,14 @@
 
 $(document).ready(function() {
-	// Cambiar el color del borde de la caja para ingreso de votos de diputados
-	$(".cajaVotosDip").on('click', function() {
-		$(this).css('border','1px solid green');
+	// Cambiar el color del borde del div cajaVotosDip a verde
+	$("input").closest("form").on('focusin', function() {
+		$(this).parents('.cajaVotosDip').css('border','1.5px solid green');
 	});
+	// Cambiar el color del borde del div cajaVotosDip a azul
+	$(".cajaVotosDip").on('focusout', function() {
+		$(this).css('border','1px solid blue');
+	});
+	
 	// Inicio de Sesion de Usuarios
 	var formLogin = $("#frmLogin");
 	$(formLogin).on('submit',function(){
@@ -30,6 +35,7 @@ $(document).ready(function() {
 		$('#noMer').prop('disabled', true);
 		$('#btnNuevoMer').tooltip('show');
 		$('input[name=NoActa]').val($(this).val());
+		$('span[name=noActaDip]').replaceWith("<span name='noActaDip'>" + $(this).val() + "</span>");
 	});
 	// Activa el campo de texto noMer
 	$('#btnNuevoMer').click(function() {
