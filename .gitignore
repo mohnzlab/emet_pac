@@ -14,3 +14,27 @@ emet_pac/urls.pyc
 emet_pac/urls.pyc
 
 *.pyc
+
+emet/__init__.pyc
+
+emet/__init__.pyc
+
+emet/admin.pyc
+
+emet/admin.pyc
+
+emet/models.pyc
+
+emet/models.pyc
+
+emet_pac/__init__.pyc
+
+emet_pac/__init__.pyc
+
+emet_pac/settings.pyc
+
+emet_pac/settings.pyc
+
+emet_pac/wsgi.pyc
+
+emet_pac/wsgi.pyc
