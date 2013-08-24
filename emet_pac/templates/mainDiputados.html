@@ -41,7 +41,7 @@
 									<form id="formN{{Diputado.RepDiputadoID}}" class="form-horizontal" action="ActaDiputado/" method="POST">{% csrf_token %}
 											<div class="row">
 												<div class="col-6 col-sm-6 col-lg-6">
-													<input type="number" min="0" class="form-control numero" name="Votos" placeholder="#Votos" autocomplete="off">
+													<input type="number" min="0" class="form-control numero" name="CantVotos" placeholder="#Votos" autocomplete="off">
 												</div>
 												<div class="col-6 col-sm-4 col-lg-4">
 													<button id="target{{Diputado.RepDiputadoID}}" class="btn btn-primary" type="submit">Guardar</button>

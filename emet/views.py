@@ -117,3 +117,23 @@ def ActaAlcaldeAdd(request):
 			else:
 				respuesta = {'codigo': 3, 'msg': 'ERROR, esta acta ya habia sido guardada.'}
 				return HttpResponse(simplejson.dumps(respuesta))
+
+@login_required(login_url='/login/')
+def ActaDiputadoAdd(request):
+	if request.is_ajax():
+		if request.method == 'POST':
+			NumActaCount = ActasDiputados.objects.filter(NoActa=request.POST['NoActa'], RepDiputadoID=request.POST['RepDiputadoID']).count()
+			if NumActaCount < 1:
+				formi = ActasDiputadosForm(data=request.POST)
+				if formi.is_valid():
+					u = formi.save(commit=False)
+					u.FechaRegistro = datetime.now()
+					u.save()
+					respuesta = {'codigo': 1, 'msg': 'El acta ha sido guardada'}
+					return HttpResponse(simplejson.dumps(respuesta))
+				else:
+					respuesta = {'codigo': 2, 'msg': 'No se ha podido guardar el acta '}
+					return HttpResponse(simplejson.dumps(respuesta))
+			else:
+				respuesta = {'codigo': 3, 'msg': 'ERROR, esta acta ya habia sido guardada.'}
+				return HttpResponse(simplejson.dumps(respuesta))
