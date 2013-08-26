@@ -8,26 +8,30 @@
 		</div>
 		<div class="col-sm-8">
 			<form id="formN{{Diputado.RepDiputadoID}}" class="form-horizontal candidatos" action="ActaDiputado/" method="POST">{% csrf_token %}
+				<fieldset>
+					<div class="row">
+						<div class="form-group col-6 col-sm-4 col-lg-3">
+							<input type="input" class="form-control" name="NoActa" placeholder="# MER" readonly>
+						</div>
+						<div class="form-group col-6 col-sm-6 col-lg-6">
+							<input type="number" min="0" class="form-control numero" name="CantVotos" placeholder="#Votos" autocomplete="off">
+						</div>
+						<div class="form-group col-6 col-sm-4 col-lg-4" hidden>
+							<input type="input" class="form-control" name="UsuarioEmetID" value="{{ user.id }}" readonly>
+						</div>
+						<div class="form-group col-lg-6 col-sm-4 col-lg-4" hidden>
+							<input type="input" class="form-control" name="RepDiputadoID" value='{{Diputado.RepDiputadoID}}' readonly>
+						</div>
+						<div class="col-6 col-sm-4 col-lg-4">
+							<button id="target{{Diputado.RepDiputadoID}}" class="btn btn-primary" type="submit">Guardar</button>
+						</div> 
+					</div>
+				</fieldset>
 				<div class="row">
-					<div class="col-6 col-sm-6 col-lg-6">
-						<input type="number" min="0" class="form-control numero" name="CantVotos" placeholder="#Votos" autocomplete="off">
+						<div class="alert mensajeDip" hidden>  
+							<a class="close" data-dismiss="alert">×</a>
+						</div>	
 					</div>
-					<div class="col-6 col-sm-4 col-lg-4">
-						<input type="hidden" class="form-control" name="UsuarioEmetID" value="{{ user.id }}" readonly>
-					</div>
-					<div class="col-6 col-sm-4 col-lg-4">
-						<input type="hidden" class="form-control" name="NoActa" placeholder="# MER" readonly>
-					</div>
-					<div class="col-lg-6 col-sm-4 col-lg-4">
-						<input type="hidden" class="form-control" name="RepDiputadoID" value='{{Diputado.RepDiputadoID}}' readonly>
-					</div>
-					<div class="col-6 col-sm-4 col-lg-4">
-						<button id="target{{Diputado.RepDiputadoID}}" class="btn btn-primary" type="submit">Guardar</button>
-					</div> 
-				</div>
-				<div class="alert" style="margin-top: 1em;" hidden>  
-					<a class="close" data-dismiss="alert">×</a>
-				</div>
 			</form>
 		</div>
 	</div>
@@ -38,3 +42,95 @@
 	</div>
 	{% endfor %}
 </div>
+<script>
+$(document).ready(function() {
+	// Inicializar el numero de acta
+	$('span[name=noActaDip]').replaceWith("<span name='noActaDip'>" + $("#noMer").val() + "</span>");
+	$('input[name=NoActa]').val($("#noMer").val());
+
+
+	$("input").closest("form").on('focusin', function() {
+		$(this).parents('.cajaVotosDip').css('border', '1.5px solid green');
+	});
+	// Cambiar el color del borde del div cajaVotosDip a azul
+	$(".cajaVotosDip").on('focusout', function() {
+		$(this).css('border', '1px solid blue');
+	});
+	// Funcion para aceptar solo numeros en input boxes
+	$(".numero").keydown(function(event) {
+		// Permitir: backspace, delete, tab, escape, y enter
+		if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+			// Permitir: Ctrl+A
+			(event.keyCode == 65 && event.ctrlKey === true) ||
+			// Permitir: home, end, left, right
+			(event.keyCode >= 35 && event.keyCode <= 39)) {
+			// No hacer nada
+			return;
+		} else {
+			//Asegurar que se ingresa un numero y detener keypress
+			if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+				event.preventDefault();
+			}
+		}
+	});
+	// Cambia el mensaje de error de un campo requerido
+	$.validator.messages.required = 'Este campo es requerido.';
+	//Obtener Id del form submited
+	$("button[Id]").closest(".candidatos").on('click', function() {
+		var noActa = $("#noMer").val();
+		if (noActa == 0) {
+			$("#errorActa").prop('hidden', false);
+		} else {
+			var id = "#" + $(this).closest("form").attr('id');
+			$(id).validate({
+				rules: {
+					NoActa: {
+						required: true
+					},
+					CantVotos: {
+						required: true
+					}
+				},
+				highlight: function(element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				},
+				success: function(element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				},
+				submitHandler: function(form) {
+					$.ajax({
+						data: $(form).serialize(),
+						type: $(form).attr('method'),
+						dataType: "json",
+						url: $(form).attr('action'),
+						success: function(data) {
+							if (data.codigo == 1) {
+								bloquearControles(form, false);
+								mostrarMensaje(form, "<span class='alertContenido'><strong>Genial!</strong> El registro se guardo correctamente.</span>", "alert-success");
+							} else if (data.codigo == 2) {
+								mostrarMensaje(form, "<span class='alertContenido'><strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.</span>", "alert-danger");
+							} else if (data.codigo == 3) {
+								mostrarMensaje(form, "<span class='alertContenido'><strong>Alto!</strong> ERROR, Acta duplicada.</span>", "alert-danger");
+							}
+						}
+					});
+					return false;
+				}
+			});
+		}
+	});
+	// Funcion para bloquear los controles del formulario actual
+
+	function bloquearControles(form, isClean) {
+		$(form).find('fieldset').prop('disabled', true);
+		if (isClean) {
+			$(form).find('input[name=CantVotos]').val('');
+		};
+	}
+	// Funcion para mostrar mensajes
+	function mostrarMensaje(form, mensaje, tipo) {
+		$(form).find(".mensajeDip").addClass(tipo).append(mensaje);
+		$(form).find(".mensajeDip").slideDown(200);
+	}
+});
+</script>

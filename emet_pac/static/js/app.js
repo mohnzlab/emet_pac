@@ -1,6 +1,11 @@
 $(document).ready(function() {
 	// Funcion para mostrar los diputados segun movimiento seleccionado
 	$("#buscarDip").click(function() {
+		var noActa = $("#noMer").val();
+		if (noActa == 0) {
+			$("#errorActa").prop('hidden', false);
+		} else {
+			$("#spinner").show();
 			q = $("#movimientoPolitico").val();
 			$.ajax({
 				url: 'Filtrar/',
@@ -11,20 +16,14 @@ $(document).ready(function() {
 				traditional: true,
 				dataType: 'html',
 				success: function(result) {
+					$("#spinner").hide();
 					$("#resultadoDiputados").remove();
 					$('#diputados').append(result);
 				}
 			});
+		}
 	});
-		
-	// Cambiar el color del borde del div cajaVotosDip a verde
-	$("input").closest("form").on('focusin', function() {
-		$(this).parents('.cajaVotosDip').css('border','1.5px solid green');
-	});
-	// Cambiar el color del borde del div cajaVotosDip a azul
-	$(".cajaVotosDip").on('focusout', function() {
-		$(this).css('border','1px solid blue');
-	});
+
 	
 	// Inicio de Sesion de Usuarios
 	var formLogin = $("#frmLogin");
@@ -52,7 +51,7 @@ $(document).ready(function() {
 		$('#noMer').prop('disabled', true);
 		$('#btnNuevoMer').tooltip('show');
 		$('input[name=NoActa]').val($(this).val());
-		$('span[name=noActaDip]').replaceWith("<span name='noActaDip'>" + $(this).val() + "</span>");
+		$('span[name=noActaDip]').replaceWith("<span name='noActaDip'>" + $("#noMer").val() + "</span>");
 	});
 	// Activa el campo de texto noMer
 	$('#btnNuevoMer').click(function() {
@@ -61,6 +60,7 @@ $(document).ready(function() {
 		$('#btnNuevoMer').tooltip('destroy');
 		$('#noMer').val('');
 		$('input[name=noMer]').val('');
+		$('span[name=noActaDip]').replaceWith("<span name='noActaDip'></span>");
 		ocultarMensajes();
 		desbloquearControles(true);
 	});
@@ -82,6 +82,8 @@ $(document).ready(function() {
 			}
 		}
 	});
+	// Cambia el mensaje de error de un campo requerido
+	$.validator.messages.required = 'Este campo es requerido.';
 	//Obtener Id del form submited
 	$("button[Id]").closest(".candidatos").on('click', function() {
 		var noActa = $("#noMer").val();
@@ -134,9 +136,6 @@ $(document).ready(function() {
 	});
 
 
-	// Cambia el mensaje de error de un campo requerido
-	$.validator.messages.required = 'Este campo es requerido.';
-
 	// Funcion para bloquear los controles del formulario actual
 
 	function bloquearControles(form, isClean) {
@@ -159,6 +158,7 @@ $(document).ready(function() {
 			$(form).find('input[name=VotosValidos]').val('');
 			$(form).find('input[name=VotosNulos]').val('');
 			$(form).find('input[name=VotosBlancos]').val('');
+			$(form).find('input[name=CantVotos]').val('');
 		};
 	}
 	// Funcion para mostrar mensajes
@@ -178,8 +178,6 @@ $(document).ready(function() {
 
 });
 
-$(document).ajaxStart(function(){ 
-   $("#spinner").show();
-}).ajaxStop(function(){ 
-   $("#spinner").hide();
-});
+
+
+
