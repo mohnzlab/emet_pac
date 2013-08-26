@@ -1,5 +1,22 @@
-
 $(document).ready(function() {
+	// Funcion para mostrar los diputados segun movimiento seleccionado
+	$("#buscarDip").click(function() {
+			q = $("#movimientoPolitico").val();
+			$.ajax({
+				url: 'Filtrar/',
+				type: 'GET',
+				data: {
+					'q': q
+				},
+				traditional: true,
+				dataType: 'html',
+				success: function(result) {
+					$("#resultadoDiputados").remove();
+					$('#diputados').append(result);
+				}
+			});
+	});
+		
 	// Cambiar el color del borde del div cajaVotosDip a verde
 	$("input").closest("form").on('focusin', function() {
 		$(this).parents('.cajaVotosDip').css('border','1.5px solid green');
@@ -66,50 +83,54 @@ $(document).ready(function() {
 		}
 	});
 	//Obtener Id del form submited
-	$("button[Id]").closest("button").on('click', function() {
-		var id = "#" + $(this).closest("form").attr('id');
-
-		$(id).validate({
-			rules: {
-				NoActa: {
-					required: true
-				},
-				VotosValidos: {
-					required: true
-				},
-				VotosNulos: {
-					required: true
-				},
-				VotosBlancos: {
-					required: true
-				}
-			},
-			highlight: function(element) {
-				$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-			},
-			success: function(element) {
-				$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-			},
-			submitHandler: function(form) {
-				$.ajax({
-					data: $(form).serialize(),
-					type: $(form).attr('method'),
-					dataType: "json",
-					url: $(form).attr('action'),
-					success: function(data) {
-						if (data.codigo == 1) {
-							bloquearControles(form, false);
-							mostrarMensaje(form, "<span class='alertContenido'><strong>Genial!</strong> El registro se guardo correctamente.</span>", "alert-success");
-						} else if (data.codigo == 2) {
-							mostrarMensaje(form, "<span class='alertContenido'><strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.</span>", "alert-danger");
-						} else if(data.codigo == 3) {
-							mostrarMensaje(form, "<span class='alertContenido'><strong>Alto!</strong> ERROR, Acta duplicada.</span>", "alert-danger");
-						}
+	$("button[Id]").closest(".candidatos").on('click', function() {
+		var noActa = $("#noMer").val();
+		if (noActa == 0) {
+			$("#errorActa").prop('hidden', false);
+		} else {
+			var id = "#" + $(this).closest("form").attr('id');
+			$(id).validate({
+				rules: {
+					NoActa: {
+						required: true
+					},
+					VotosValidos: {
+						required: true
+					},
+					VotosNulos: {
+						required: true
+					},
+					VotosBlancos: {
+						required: true
 					}
-				});
-				return false;
-			}
-		});
+				},
+				highlight: function(element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				},
+				success: function(element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				},
+				submitHandler: function(form) {
+					$.ajax({
+						data: $(form).serialize(),
+						type: $(form).attr('method'),
+						dataType: "json",
+						url: $(form).attr('action'),
+						success: function(data) {
+							if (data.codigo == 1) {
+								bloquearControles(form, false);
+								mostrarMensaje(form, "<span class='alertContenido'><strong>Genial!</strong> El registro se guardo correctamente.</span>", "alert-success");
+							} else if (data.codigo == 2) {
+								mostrarMensaje(form, "<span class='alertContenido'><strong>Oh no :( !</strong> Ocurrio un error al guardar el registro, por favor comunicate con el administrador.</span>", "alert-danger");
+							} else if (data.codigo == 3) {
+								mostrarMensaje(form, "<span class='alertContenido'><strong>Alto!</strong> ERROR, Acta duplicada.</span>", "alert-danger");
+							}
+						}
+					});
+					return false;
+				}
+			});
+		}
 	});
 
 
@@ -148,11 +169,17 @@ $(document).ready(function() {
 
 	// Funcion para ocultar mensajes
 	function ocultarMensajes() {
-		$(".alert").removeClass("alert-danger");
+		if ($(".alert").attr('id') != "errorActa") {
+			$(".alert").removeClass("alert-danger");
+		};
 		$(".alertContenido").remove();
 		$(".alert").slideUp(200);
 	}
 
+});
 
-
+$(document).ajaxStart(function(){ 
+   $("#spinner").show();
+}).ajaxStop(function(){ 
+   $("#spinner").hide();
 });

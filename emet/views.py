@@ -66,9 +66,11 @@ def mainPresidentes(request):
 
 @login_required(login_url='/login/')
 def mainDiputados(request):
+	formi = ActasDiputadosForm()
+	AllDiputados = ''
+	#AllDiputados = RepDiputados.objects.all().select_related('Movimientos').order_by('OrdenRepDiputados')
 	AllMovimientos = Movimientos.objects.all().order_by('MovimientoNombre')
-	# AllDiputados = RepDiputados.objects.all().select_related('Movimientos').order_by('OrdenRepDiputados')
-	return render_to_response('mainDiputados.html', {'TMovimientos' : AllMovimientos}, context_instance=RequestContext(request))
+	return render_to_response('mainDiputados.html', {'TDiputados' : AllDiputados, 'TMovimientos' : AllMovimientos}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def salir(request):
@@ -138,14 +140,11 @@ def ActaDiputadoAdd(request):
 @login_required(login_url='/login/')
 def FiltrarDiputados(request):
 	if request.is_ajax():
-		if request.method == 'POST':
-			DiputadosFiltrados = serializers.serialize('json', RepDiputados.objects.filter(MovimientoID=request.POST['MovimientoID']))
-			return HttpResponse(simplejson.dumps(DiputadosFiltrados))
+		q = request.GET.get('q', False)
+		if q is not None:           
+			AllDiputados = RepDiputados.objects.filter(MovimientoID = q).order_by('OrdenRepDiputados')
+			return render_to_response('diputadosFiltrados.html', {'TDiputados' : AllDiputados}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def Reportes(request):
 	pass
-
-def prueba(request):
-	AllMovimientos = Movimientos.objects.all().order_by('MovimientoNombre')
-	return render_to_response('prueba.html', {'TMovimientos' : AllMovimientos}, context_instance=RequestContext(request))

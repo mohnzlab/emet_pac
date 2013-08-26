@@ -2,24 +2,41 @@
 	{% block titulo %} emet | Diputados {% endblock %}
 	{% block contenido %}
 	<div class="container">
-		<form class="form-horizontal" method="POST" action="Filtrar/">{% csrf_token %}
+		<form id="buscarDiputados" class="form-horizontal">
 			<div class="form-group">
-				<h3><label for="noMer" class="col-lg-2 control-label"># MER:</label></h3>
-				<div class="col-6 col-sm-4 col-lg-4">
-					<input type="number" min="0" class="form-control numero" style="color:red; font-weight:bold" id="noMer" placeholder="#" disabled>
+				<h3><label for="movimiento" class="col-lg-2 control-label">Movimiento:</label></h3>
+				<div class="col-6 col-sm-4 col-lg-3">
+					<select class="form-control" id="movimientoPolitico" placeholder="Seleccione">
+						{% for Movimiento in TMovimientos %}
+						<option value="{{Movimiento.MovimientoID}}">{{Movimiento.MovimientoCodigo}}</option> 
+						{% empty %}
+						<div class="alert alert-danger" style="margin-top: 1em;"  hidden>  
+							<a class="close" data-dismiss="alert">×</a>
+							<span>No hay movimientos registrados</span>
+						</div>
+						{% endfor %}
+					</select>
 				</div>
-				<div class="col-6 col-sm-4 col-lg-4">
-					<button id="btnNuevoMer" class="btn btn-primary" type="button" data-animation="true" data-placement="top" title="Presiona este boton para ingresar un nuevo numero de acta">Nuevo</button> 
+				<div class="col-6 col-sm-4 col-lg-1">
+					<button id="buscarDip" class="btn btn-primary" type="button">Buscar</button> 
+				</div>
+				<div style="margin-top:0.3em;" class="col-8 col-sm-6 col-lg-4">
+					<span id="spinner" hidden><img style="height:35px; width:35px;" src="{{STATIC_URL}}img/loading.gif"/></span>
 				</div>
 			</div>
 			<div class="form-group">
-				<h3><label for="movimiento" class="col-lg-2 control-label">Movimiento:</label></h3>
-				<div class="col-8 col-sm-6 col-lg-4">
-					<select class="form-control" id="movimiento" placeholder="Movimiento Politico">
-						{% for Movimiento in TMovimientos %}
-						<option value="{{Movimiento.MovimientoID}}">{{Movimiento.MovimientoNombre}}</option>
-						{% endfor %}
-					</select>
+				<h3><label for="noMer" class="col-lg-2 control-label"># MER:</label></h3>
+				<div class="col-6 col-sm-4 col-lg-3">
+					<input type="number" min="0" class="form-control numero" style="color:red; font-weight:bold" id="noMer" placeholder="#" disabled>
+				</div>
+				<div class="col-6 col-sm-4 col-lg-1">
+					<button id="btnNuevoMer" class="btn btn-primary" type="button" data-animation="true" data-placement="top" title="Presiona este boton para ingresar un nuevo numero de acta">Nuevo</button> 
+				</div>
+			</div>
+			<div class="row">
+				<div id="errorActa" class="col-offset-2 col-6 col-sm-6 col-lg-3 alert alert-danger" hidden>
+					<a class="close" data-dismiss="alert">×</a>
+					<span>Ingrese un numero de MER</span>
 				</div>
 			</div>
 		</form>
@@ -28,39 +45,7 @@
 			<section id="contenidoPrimario">
 				<div class="row">
 					<div class="col-lg-7">
-						<div class="container">
-							{% for Diputado in TDiputados %}
-							<div class="row cajaVotosDip" style="border: 1px solid blue; border-radius: 4px; margin-bottom:2em; padding: 10px">
-								<div class="col-sm-4">
-									<b><span>[{{Diputado.MovimientoID.MovimientoCodigo}}] {{Diputado.RepDiputadoNombre}} (#{{Diputado.OrdenRepDiputados}})
-									</span></b>
-									<div># MER: <span name="noActaDip"></span></div>
-								</div>
-								<div class="col-sm-8">
-									<form id="formN{{Diputado.RepDiputadoID}}" class="form-horizontal" action="ActaDiputado/" method="POST">{% csrf_token %}
-										<div class="row">
-											<div class="col-6 col-sm-6 col-lg-6">
-												<input type="number" min="0" class="form-control numero" name="CantVotos" placeholder="#Votos" autocomplete="off">
-											</div>
-											<div class="col-6 col-sm-4 col-lg-4">
-												<button id="target{{Diputado.RepDiputadoID}}" class="btn btn-primary" type="submit">Guardar</button>
-											</div> 
-											<div class="col-6 col-sm-4 col-lg-4">
-												<input type="hidden" class="form-control" name="UsuarioEmetID" value="{{ user.id }}" readonly>
-											</div>
-											<div class="col-6 col-sm-4 col-lg-4">
-												<input type="hidden" class="form-control" name="NoActa" placeholder="# MER" readonly>
-											</div>
-											<div class="col-lg-6 col-sm-4 col-lg-4">
-												<input type="hidden" class="form-control" name="RepDiputadoID" value='{{Diputado.RepDiputadoID}}' readonly>
-											</div>
-										</div>
-										<div class="alert" style="margin-top: 1em;" hidden>  
-											<a class="close" data-dismiss="alert">×</a>
-										</div>
-									</form>
-								</div>
-							</div>
+						<div id="diputados" class="container">
 						</div>
 					</div>
 				</div>
