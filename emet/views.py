@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
@@ -10,6 +11,7 @@ from django.utils import simplejson
 from emet.models import RepPresidentes, Movimientos, ActasPresidentes, ActasAlcaldes, RepAlcaldes, RepDiputados, ActasDiputados
 from datetime import datetime
 from django.core import serializers
+from django.db.models import Count, Min, Sum, Avg
 
 def home(request):
 	if not request.user.is_anonymous():
@@ -47,6 +49,9 @@ def ingresar(request):
 		else:
 			formulario = AuthenticationForm()
 			return render_to_response('home.html', {'formulario':formulario}, context_instance=RequestContext(request))
+	else:
+		formulario = AuthenticationForm()
+		return render_to_response('home.html', {'formulario':formulario}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def main(request):
@@ -146,5 +151,73 @@ def FiltrarDiputados(request):
 			return render_to_response('diputadosFiltrados.html', {'TDiputados' : AllDiputados}, context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
-def Reportes(request):
-	pass
+def ReportesAlcades(request):
+	SumAlcalde1 = RepAlcaldes.objects.annotate(Suma=Sum('actasalcaldes__VotosValidos'))
+
+	lista = []
+	lista2 = []
+
+	for n in SumAlcalde1:
+		lista.append(n.Suma)
+
+	for o in SumAlcalde1:
+		lista2.append(o)
+
+	return render_to_response('graficaAlcaldes.html', {'Valor' : lista, 'Nombres' : lista2}, context_instance=RequestContext(request))
+
+def DatosAlcaldes(request):
+	if request.method == 'GET':
+		SumAlcalde1 = RepAlcaldes.objects.annotate(Suma=Sum('actasalcaldes__VotosValidos'))
+		lista = []
+		for n in SumAlcalde1:
+			lista.append(n.Suma)
+		return HttpResponse(simplejson.dumps(lista), content_type="application/json")
+
+@login_required(login_url='/login/')
+def ReportesPresidentes(request):
+	SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos'))
+	
+	lista = []
+	lista2 = []
+	
+	for n in SumPresidentes:
+		lista.append(n.Suma)
+
+	for o in SumPresidentes:
+		lista2.append(o)
+
+	return render_to_response('graficaPresidentes.html', {'Valor' : lista, 'Nombres' : lista2}, context_instance=RequestContext(request))
+
+
+def DatosPresidentes(request):
+	if request.method == 'GET':
+		SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos'))
+		lista = []
+		for n in SumPresidentes:
+			lista.append(n.Suma)
+		return HttpResponse(simplejson.dumps(lista), content_type="application/json")
+
+@login_required(login_url='/login/')
+def ReportesDiputados(request):
+	SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos'))
+
+	lista = []
+	lista2 = []
+
+	for n in SumDiputados:
+		lista.append(n.Suma)
+	
+	for o in SumDiputados:
+		lista2.append(o)
+		
+	return render_to_response('graficaDiputados.html', {'Valor' : lista, 'Nombres' : lista2}, context_instance=RequestContext(request))
+
+
+def DatosDiputados(request):
+	if request.method == 'GET':
+		SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos'))
+		lista = []
+		for n in SumDiputados:
+			lista.append(n.Suma)
+		return HttpResponse(simplejson.dumps(lista), content_type="application/json")
+
