@@ -150,7 +150,14 @@ def FiltrarDiputados(request):
 			AllDiputados = RepDiputados.objects.filter(MovimientoID = q).order_by('OrdenRepDiputados')
 			return render_to_response('diputadosFiltrados.html', {'TDiputados' : AllDiputados}, context_instance=RequestContext(request))
 
-@login_required(login_url='/login/')
+def MostrarResultadosAlcaldesGrafica(request):
+	if request.is_ajax():
+		ResultadosAlcaldes = RepAlcaldes.objects.annotate(SumaValidos=Sum('actasalcaldes__VotosValidos'), SumaBlancos=Sum('actasalcaldes__VotosBlancos'), SumaNulos=Sum('actasalcaldes__VotosNulos'))
+	else:
+		ResultadosAlcaldes = RepAlcaldes.objects.annotate(SumaValidos=Sum('actasalcaldes__VotosValidos'), SumaBlancos=Sum('actasalcaldes__VotosBlancos'), SumaNulos=Sum('actasalcaldes__VotosNulos'))
+
+	return render_to_response('armarResultadosAlcaldes.html', {'TAlcaldes' : ResultadosAlcaldes}, context_instance=RequestContext(request))
+
 def ReportesAlcades(request):
 	SumAlcalde1 = RepAlcaldes.objects.annotate(Suma=Sum('actasalcaldes__VotosValidos'))
 
@@ -173,7 +180,6 @@ def DatosAlcaldes(request):
 			lista.append(n.Suma)
 		return HttpResponse(simplejson.dumps(lista), content_type="application/json")
 
-@login_required(login_url='/login/')
 def ReportesPresidentes(request):
 	SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos'))
 	
@@ -197,7 +203,6 @@ def DatosPresidentes(request):
 			lista.append(n.Suma)
 		return HttpResponse(simplejson.dumps(lista), content_type="application/json")
 
-@login_required(login_url='/login/')
 def ReportesDiputados(request):
 	SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos'))
 

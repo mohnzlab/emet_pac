@@ -1,0 +1,26 @@
+<div id="TablaDinamica">
+	<table class="table table-striped table-bordered table-hover">
+	    <thead>
+	        <tr>
+	        	<th>IMG</th>
+	            <th>Candidato</th>
+	            <th>Partido</th>
+	            <th>Votos Válidos</th>
+	            <th>Votos Blancos</th>
+	            <th>Votos Nulos</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    {% for Alcalde in TAlcaldes %}
+	        <tr>
+	        	<td><img src="{{MEDIA_URL}}{{Alcalde.RepImagen}}" class="imagenRedonda2" alt="{{Alcalde.RepAlcaldeNombre}}"></td>
+	            <td>{{Alcalde.RepAlcaldeNombre}}</td>
+	            <td>{{Alcalde.MovimientoID.MovimientoCodigo}}</td>
+	            <td>{{Alcalde.SumaValidos}}</td>
+	            <td>{{Alcalde.SumaBlancos}}</td>
+	            <td>{{Alcalde.SumaNulos}}</td>
+	        </tr>
+	    {% endfor %}
+	    </tbody>
+	</table>
+</div>

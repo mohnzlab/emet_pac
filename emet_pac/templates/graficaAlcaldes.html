@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <!-- Bootstrap -->
-  <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="screen">
   <link href="{{STATIC_URL}}css/app.css" rel="stylesheet" media="screen">
 </head>
 <body>
@@ -16,7 +16,16 @@
     <p id="usuario" class="navbar-text pull-right">Inició Sesion como <strong>{{ user.username }}</strong></p>
     {% endif %}
   </div>
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  <div class="row">
+      <div class="col-md-6">
+          <div id="container" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+      </div>
+      <div id="Reemplazador" class="col-md-6">
+      <div id="TablaDinamica">
+        <h4>Cargando datos...</h4>
+      </div>
+      </div>
+  </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.timer.js"></script>
     <script src="{{ STATIC_URL }}js/highcharts.js"></script>
@@ -24,6 +33,29 @@
 <script type="text/javascript">
     
         $(function(){
+
+            var cuadroAlcaldes = function()
+            {
+                //alert("LlamandoTabla");
+                $.ajax({
+                    url: '/DatosCuadroAlcaldes/',
+                    type: 'GET',
+                    data: {
+                        
+                    },
+                    traditional: true,
+                    dataType: 'html',
+                    success: function(result) {
+                        $("#TablaDinamica").remove();
+                        $('#Reemplazador').append(result);
+                        //alert(result);
+                    },
+                      // error: function (xhr, ajaxOptions, thrownError) {
+                      //   alert(xhr.status);
+                      //   alert(thrownError);
+                      // }
+                });
+            };
 
             var charts = function(data, nombres)
             {
@@ -110,12 +142,19 @@
 
             charts( {{ Valor }}, nombres); //LLama a la función que contiene el procedimiento para generar el gráfico y le pasa los valores
 
-            var timer = $.timer(2000, function(){
+            var timer = $.timer(5000, function(){
 
                 $.get("/DatosAlcaldes/", function(datos){
                     charts(datos, nombres);  //Datos formateados en JSON
                 });
 
+                // $.get("/DatosCuadroAlcaldes/", function(tabla){
+                //     $("#TablaDinamica").remove();
+                //     $('#Reemplazador').append(tabla);
+                //     alert(tabla);
+                // });
+
+                cuadroAlcaldes();
             });
         });
 
