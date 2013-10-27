@@ -18,6 +18,7 @@
   </div>
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.timer.js"></script>
     <script src="{{ STATIC_URL }}js/highcharts.js"></script>
     <script src="{{ STATIC_URL }}js/modules/exporting.js"></script>
@@ -34,7 +35,7 @@
                         type: 'bar'
                     },
                     title: {
-                        text: 'Cantidad de Votos Válidos por Presidente'
+                        text: 'Cantidad de Votos Válidos por Presidente - PAC Choluteca'
                     },
                     subtitle: {
                         text: 'Source: emet'
@@ -121,5 +122,25 @@
 
         
     </script>
+<div id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <blockquote>
+          <article>
+            <p>Sistema de Conteo de Votos Electorales.</p>
+          </article>
+          <article>
+            <strong>Partido Anti Corrupción de Honduras (PAC) - Choluteca.</strong>
+          </article>
+          <article>
+            Sistema creado y diseñado por Moncho Zuniga (<a href="https://www.twitter.com/monchozuniga" target="_blank">@monchozuniga</a>) y Daniel Ortiz (<a href="https://www.twitter.com/danielortiz_d" target="_blank">@danielortiz_d</a>). Derechos Reservados &#169; 2013. 
+          </article>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

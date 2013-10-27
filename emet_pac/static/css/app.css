@@ -23,6 +23,12 @@ label.error {
 	width: 150px;
 }
 
+#container {
+    height: 400px;
+    margin: 0 2em 2em 2em;
+	min-width: 300px;  
+}
+
 #contenidoPrimario {
 	margin-left: 5%;
 }
@@ -43,6 +49,10 @@ label.error {
 
 #tituloNavBar {
 	font-size: 2em;
+}
+
+#TablaDinamica {
+	margin: 0 2em 2em 2em;
 }
 
 #footer {
