@@ -16,7 +16,7 @@
     <p id="usuario" class="navbar-text pull-right">Inició Sesion como <strong>{{ user.username }}</strong></p>
     {% endif %}
   </div>
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="container" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.timer.js"></script>
@@ -89,16 +89,14 @@
                         data: data
                     }],
                     colors: [
-                       '#F4FA58', 
-                       '#DF0101', 
-                       '#aaa', 
-                       '#910000', 
-                       '#1aadce', 
-                       '#492970',
-                       '#f28f43', 
-                       '#77a1e5', 
-                       '#c42525', 
-                       '#a6c96a'
+                       '#13872e', 
+                       '#7225ba', 
+                       '#c21b37', 
+                       '#f9d423', 
+                       '#ff526f', 
+                       '#000000',
+                       '#ffb83d', 
+                       '#002ee8'
                     ]
                 });
             };
@@ -106,7 +104,7 @@
             var nombres = [];
 
             {% for nombre in Nombres %}
-                nombres.push('{{ nombre }}');
+                nombres.push('{{ nombre }} - {{ nombre.MovimientoID.MovimientoCodigo }}');
             {% endfor %}
 
             charts( {{ Valor }}, nombres); //LLama a la función que contiene el procedimiento para generar el gráfico y le pasa los valores

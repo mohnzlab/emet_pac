@@ -158,6 +158,14 @@ def MostrarResultadosAlcaldesGrafica(request):
 
 	return render_to_response('armarResultadosAlcaldes.html', {'TAlcaldes' : ResultadosAlcaldes}, context_instance=RequestContext(request))
 
+def Mostrar9DiputadosGanando(request):
+	if request.is_ajax():
+		Resultados9Diputados = RepDiputados.objects.annotate(SumaValidos=Sum('actasdiputados__CantVotos')).order_by('RepDiputadoID')
+	else:
+		Resultados9Diputados = RepDiputados.objects.annotate(SumaValidos=Sum('actasdiputados__CantVotos')).order_by('RepDiputadoID')
+
+	return render_to_response('armarResultados9Diputados.html', {'TDiputados' : Resultados9Diputados}, context_instance=RequestContext(request))
+
 def ReportesAlcades(request):
 	SumAlcalde1 = RepAlcaldes.objects.annotate(Suma=Sum('actasalcaldes__VotosValidos'))
 
@@ -172,6 +180,39 @@ def ReportesAlcades(request):
 
 	return render_to_response('graficaAlcaldes.html', {'Valor' : lista, 'Nombres' : lista2}, context_instance=RequestContext(request))
 
+def Dashboard(request):
+	SumAlcalde1 = RepAlcaldes.objects.annotate(Suma=Sum('actasalcaldes__VotosValidos'))
+	SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos')).order_by('OrdenRepPresidentes')
+	SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos')).order_by('RepDiputadoID')[:9]
+
+	lista = []
+	lista2 = []
+	lista12 = []
+	lista22 = []
+	lista13 = []
+	lista23 = []
+
+	for n in SumAlcalde1:
+		lista.append(n.Suma)
+
+	for o in SumAlcalde1:
+		lista2.append(o)
+
+	for a  in SumPresidentes:
+		lista12.append(a.Suma)
+
+	for b in SumPresidentes:
+		lista22.append(b)
+
+	for c in SumDiputados:
+		lista13.append(c.Suma)
+
+	for d in SumDiputados:
+		lista23.append(d)
+
+	return render_to_response('dashboard.html', {'Valor' : lista, 'Nombres' : lista2, 'Valor2' : lista12, 'Nombres2' : lista22, 'Valor3' : lista13, 'Nombres3' : lista23}, context_instance=RequestContext(request))
+
+
 def DatosAlcaldes(request):
 	if request.method == 'GET':
 		SumAlcalde1 = RepAlcaldes.objects.annotate(Suma=Sum('actasalcaldes__VotosValidos'))
@@ -181,7 +222,7 @@ def DatosAlcaldes(request):
 		return HttpResponse(simplejson.dumps(lista), content_type="application/json")
 
 def ReportesPresidentes(request):
-	SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos'))
+	SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos')).order_by('OrdenRepPresidentes')
 	
 	lista = []
 	lista2 = []
@@ -197,7 +238,7 @@ def ReportesPresidentes(request):
 
 def DatosPresidentes(request):
 	if request.method == 'GET':
-		SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos'))
+		SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos')).order_by('OrdenRepPresidentes')
 		lista = []
 		for n in SumPresidentes:
 			lista.append(n.Suma)
@@ -220,7 +261,7 @@ def ReportesDiputados(request):
 
 def DatosDiputados(request):
 	if request.method == 'GET':
-		SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos'))
+		SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos'))[:9]
 		lista = []
 		for n in SumDiputados:
 			lista.append(n.Suma)

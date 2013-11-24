@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <!-- Bootstrap -->
-  <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="screen">
+  <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="{{STATIC_URL}}css/app.css" rel="stylesheet" media="screen">
 </head>
 <body>
@@ -16,16 +16,7 @@
     <p id="usuario" class="navbar-text pull-right">Inició Sesion como <strong>{{ user.username }}</strong></p>
     {% endif %}
   </div>
-  <div class="row">
-      <div class="col-md-6">
-          <div id="container"></div>
-      </div>
-      <div id="Reemplazador" class="col-md-6">
-      <div id="TablaDinamica">
-        <h4>Cargando datos...</h4>
-      </div>
-      </div>
-  </div>
+    <div id="container" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.timer.js"></script>
@@ -34,29 +25,6 @@
 <script type="text/javascript">
     
         $(function(){
-
-            var cuadroAlcaldes = function()
-            {
-                //alert("LlamandoTabla");
-                $.ajax({
-                    url: '/DatosCuadroAlcaldes/',
-                    type: 'GET',
-                    data: {
-                        
-                    },
-                    traditional: true,
-                    dataType: 'html',
-                    success: function(result) {
-                        $("#TablaDinamica").remove();
-                        $('#Reemplazador').append(result);
-                        //alert(result);
-                    },
-                      // error: function (xhr, ajaxOptions, thrownError) {
-                      //   alert(xhr.status);
-                      //   alert(thrownError);
-                      // }
-                });
-            };
 
             var charts = function(data, nombres)
             {
@@ -67,7 +35,7 @@
                         type: 'bar'
                     },
                     title: {
-                        text: 'Cantidad de Votos Válidos por Alcaldes - PAC Choluteca'
+                        text: 'Cantidad de Votos Válidos por Alcalde - PAC Choluteca'
                     },
                     subtitle: {
                         text: 'Source: emet'
@@ -121,16 +89,14 @@
                         data: data
                     }],
                     colors: [
-                       '#F4FA58', 
-                       '#DF0101', 
-                       '#aaa', 
-                       '#910000', 
-                       '#1aadce', 
-                       '#492970',
-                       '#f28f43', 
-                       '#77a1e5', 
-                       '#c42525', 
-                       '#a6c96a'
+                       '#13872e', 
+                       '#7225ba', 
+                       '#c21b37', 
+                       '#f9d423', 
+                       '#ff526f', 
+                       '#000000',
+                       '#ffb83d', 
+                       '#002ee8'
                     ]
                 });
             };
@@ -138,24 +104,17 @@
             var nombres = [];
 
             {% for nombre in Nombres %}
-                nombres.push('{{ nombre }}');
+                nombres.push('{{ nombre }} - {{ nombre.MovimientoID.MovimientoCodigo }}');
             {% endfor %}
 
             charts( {{ Valor }}, nombres); //LLama a la función que contiene el procedimiento para generar el gráfico y le pasa los valores
 
-            var timer = $.timer(5000, function(){
+            var timer = $.timer(2000, function(){
 
                 $.get("/DatosAlcaldes/", function(datos){
                     charts(datos, nombres);  //Datos formateados en JSON
                 });
 
-                // $.get("/DatosCuadroAlcaldes/", function(tabla){
-                //     $("#TablaDinamica").remove();
-                //     $('#Reemplazador').append(tabla);
-                //     alert(tabla);
-                // });
-
-                cuadroAlcaldes();
             });
         });
 
@@ -180,5 +139,6 @@
     </div>
   </div>
 </div>
+
 </body>
 </html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gráficas de Alcaldes | Emet</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- Bootstrap -->
+  <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="screen">
+  <link href="{{STATIC_URL}}css/app.css" rel="stylesheet" media="screen">
+</head>
+<body>
+  <div id="mainNavbar" class="navbar">
+    <a id="tituloNavBar" class="navbar-brand" href="/">emet</a>
+     {% if user.is_authenticated %}
+    <a class="btn btn-danger navbar-btn" href="/logout_/">Cerrar Sesion</a>
+    <p id="usuario" class="navbar-text pull-right">Inició Sesion como <strong>{{ user.username }}</strong></p>
+    {% endif %}
+  </div>
+  <div class="row">
+      <div class="col-md-6">
+        <div id="container"></div>
+        <div id="TablaDinamica2">
+          <h4>Cargando datos...</h4>
+        </div>
+      </div>
+      <div id="Reemplazador" class="col-md-6">
+        <div id="TablaDinamica">
+          <h4>Cargando datos...</h4>
+        </div>
+        <div id="TablaDinamica3">
+          <h4>Cargando datos...</h4>
+        </div>
+      </div>
+  </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.timer.js"></script>
+    <script src="{{ STATIC_URL }}js/highcharts.js"></script>
+    <script src="{{ STATIC_URL }}js/modules/exporting.js"></script>
+<script type="text/javascript">
+    
+        $(function(){
+
+            // var cuadroAlcaldes = function()
+            // {
+            //     //alert("LlamandoTabla");
+            //     $.ajax({
+            //         url: '/DatosCuadroAlcaldes/',
+            //         type: 'GET',
+            //         data: {
+                        
+            //         },
+            //         traditional: true,
+            //         dataType: 'html',
+            //         success: function(result) {
+            //             $("#TablaDinamica").remove();
+            //             $('#Reemplazador').append(result);
+            //             //alert(result);
+            //         },
+            //           // error: function (xhr, ajaxOptions, thrownError) {
+            //           //   alert(xhr.status);
+            //           //   alert(thrownError);
+            //           // }
+            //     });
+            // };
+
+            var cuadroDiputados = function()
+            {
+                //alert("LlamandoTabla");
+                $.ajax({
+                    url: '/DatosCuadroDiputados/',
+                    type: 'GET',
+                    data: {
+                        
+                    },
+                    traditional: true,
+                    dataType: 'html',
+                    success: function(result) {
+                        $("#TablaDinamica3").remove();
+                        $('#Reemplazador').append(result);
+                        //alert(result);
+                    },
+                      // error: function (xhr, ajaxOptions, thrownError) {
+                      //   alert(xhr.status);
+                      //   alert(thrownError);
+                      // }
+                });
+            };
+
+            var chartsAlcaldes = function(data, nombres)
+            {
+                console.log(data);
+
+                $('#TablaDinamica').highcharts({
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Cantidad de Votos Válidos por Alcaldes - PAC Choluteca'
+                    },
+                    subtitle: {
+                        text: 'Source: emet'
+                    },
+                    xAxis: {
+                        categories: nombres,
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Cantidad de Votos',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' Votos'
+                    },
+                    plotOptions: {
+                        series: {
+                            animation: false,
+                            colorByPoint: true
+                        },
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'bottom',
+                        x: -40,
+                        y: 100,
+                        floating: true,
+                        borderWidth: 1,
+                        backgroundColor: '#FFFFFF',
+                        shadow: true
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Votos Válidos',
+                        data: data
+                    }],
+                    colors: [
+                       '#13872e', 
+                       '#7225ba', 
+                       '#c21b37', 
+                       '#f9d423', 
+                       '#ff526f', 
+                       '#000000',
+                       '#ffb83d', 
+                       '#002ee8'
+                    ]
+                });
+            };
+
+            var chartsPresidentes = function(data, nombres)
+            {
+                console.log(data);
+
+                $('#container').highcharts({
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Cantidad de Votos Válidos por Presidentes - PAC Choluteca'
+                    },
+                    subtitle: {
+                        text: 'Source: emet'
+                    },
+                    xAxis: {
+                        categories: nombres,
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Cantidad de Votos',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' Votos'
+                    },
+                    plotOptions: {
+                        series: {
+                            animation: false,
+                            colorByPoint: true
+                        },
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'bottom',
+                        x: -40,
+                        y: 100,
+                        floating: true,
+                        borderWidth: 1,
+                        backgroundColor: '#FFFFFF',
+                        shadow: true
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Votos Válidos',
+                        data: data
+                    }],
+                    colors: [
+                       '#13872e', 
+                       '#7225ba', 
+                       '#c21b37', 
+                       '#f9d423', 
+                       '#ff526f', 
+                       '#000000',
+                       '#ffb83d', 
+                       '#002ee8'
+                    ]
+                });
+            };
+
+            var chartsDiputados = function(data, nombres, colores2)
+            {
+                console.log(data);
+
+                $('#TablaDinamica2').highcharts({
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Cantidad de Votos Válidos por Diputados - PAC Choluteca'
+                    },
+                    subtitle: {
+                        text: 'Source: emet'
+                    },
+                    xAxis: {
+                        categories: nombres,
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Cantidad de Votos',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' Votos'
+                    },
+                    plotOptions: {
+                        series: {
+                            animation: false,
+                            colorByPoint: true
+                        },
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'bottom',
+                        x: -40,
+                        y: 100,
+                        floating: true,
+                        borderWidth: 1,
+                        backgroundColor: '#FFFFFF',
+                        shadow: true
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Votos Válidos',
+                        data: data
+                    }],
+                    colors: colores2
+                });
+            };
+
+            var nombres = [];
+            var nombres2 = [];
+            var nombres3 = [];
+            var coloresDip = [];
+
+            {% for nombre in Nombres %}
+                nombres.push('{{ nombre }}');
+            {% endfor %}
+
+            {% for nombre in Nombres2 %}
+                nombres2.push('{{ nombre }}');
+            {% endfor %}
+
+            {% for nombre in Nombres3 %}
+                nombres3.push('{{ nombre }}');
+
+                {% if nombre.MovimientoID.MovimientoCodigo == 'DC' %}
+                coloresDip.push('#13872e');
+                {% elif nombre.MovimientoID.MovimientoCodigo == 'ADH' %}
+                coloresDip.push('#7225ba');
+                {% elif nombre.MovimientoID.MovimientoCodigo == 'PL' %}
+                coloresDip.push('#c21b37');
+                {% elif nombre.MovimientoID.MovimientoCodigo == 'PAC' %}
+                coloresDip.push('#f9d423');
+                {% elif nombre.MovimientoID.MovimientoCodigo == 'LIBRE' %}
+                coloresDip.push('#ff526f');
+                {% elif nombre.MovimientoID.MovimientoCodigo == 'UD' %}
+                coloresDip.push('#000000');
+                {% elif nombre.MovimientoID.MovimientoCodigo == 'PINU' %}
+                coloresDip.push('#ffb83d');
+                {% elif nombre.MovimientoID.MovimientoCodigo == 'PN' %}
+                coloresDip.push('#002ee8');
+                {% else %}
+                coloresDip.push('#ffffff');
+                {% endif %}
+
+            {% endfor %}
+
+            chartsAlcaldes( {{ Valor }}, nombres); //LLama a la función que contiene el procedimiento para generar el gráfico y le pasa los valores
+            chartsPresidentes( {{ Valor2 }}, nombres2);
+            chartsDiputados( {{ Valor3 }}, nombres3, coloresDip);
+
+            var timer = $.timer(10000, function(){
+
+                $.get("/DatosAlcaldes/", function(datos){
+                    chartsAlcaldes(datos, nombres);  //Datos formateados en JSON
+                });
+
+                $.get("/DatosPresidentes/", function(datos2){
+                    chartsPresidentes(datos2, nombres2);  //Datos formateados en JSON
+                });
+
+                $.get("/DatosDiputados/", function(datos3){
+                    chartsDiputados(datos3, nombres3, coloresDip);  //Datos formateados en JSON
+                });
+
+                //cuadroAlcaldes();
+                cuadroDiputados();
+            });
+        });
+
+        
+    </script>
+<div id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <blockquote>
+          <article>
+            <p>Sistema de Conteo de Votos Electorales.</p>
+          </article>
+          <article>
+            <strong>Partido Anti Corrupción de Honduras (PAC) - Choluteca.</strong>
+          </article>
+          <article>
+            Sistema creado y diseñado por Moncho Zuniga (<a href="https://www.twitter.com/monchozuniga" target="_blank">@monchozuniga</a>) y Daniel Ortiz (<a href="https://www.twitter.com/danielortiz_d" target="_blank">@danielortiz_d</a>). Derechos Reservados &#169; 2013. 
+          </article>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

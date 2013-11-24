@@ -13,7 +13,7 @@
 	    <tbody>
 	    {% for Alcalde in TAlcaldes %}
 	        <tr>
-	        	<td><img src="{{MEDIA_URL}}{{Alcalde.RepImagen}}" class="imagenRedonda2" alt="{{Alcalde.RepAlcaldeNombre}}"></td>
+	        	<td><img src="{{MEDIA_URL}}{{Alcalde.RepImagen}}" width="20px" height="20px" class="imagenRedonda2" alt="{{Alcalde.RepAlcaldeNombre}}"></td>
 	            <td>{{Alcalde.RepAlcaldeNombre}}</td>
 	            <td>{{Alcalde.MovimientoID.MovimientoCodigo}}</td>
 	            <td>{{Alcalde.SumaValidos}}</td>
