@@ -183,7 +183,7 @@ def ReportesAlcades(request):
 def Dashboard(request):
 	SumAlcalde1 = RepAlcaldes.objects.annotate(Suma=Sum('actasalcaldes__VotosValidos'))
 	SumPresidentes = RepPresidentes.objects.annotate(Suma=Sum('actaspresidentes__VotosValidos')).order_by('OrdenRepPresidentes')
-	SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos')).order_by('RepDiputadoID')[:9]
+	SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos')).order_by('-Suma')[:9]
 
 	lista = []
 	lista2 = []
@@ -261,7 +261,7 @@ def ReportesDiputados(request):
 
 def DatosDiputados(request):
 	if request.method == 'GET':
-		SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos'))[:9]
+		SumDiputados = RepDiputados.objects.annotate(Suma=Sum('actasdiputados__CantVotos')).order_by('-Suma')[:9]
 		lista = []
 		for n in SumDiputados:
 			lista.append(n.Suma)
